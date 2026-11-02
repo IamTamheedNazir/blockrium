@@ -1,0 +1,13 @@
+@include('admin.includes.header')
+@include('admin.includes.sidebar')
+@php $editing = !empty($badge); @endphp
+<div class="content-wrapper admin-content">
+  <section class="content-header admin-page-header"><div class="container-fluid"><div class="row align-items-center"><div class="col-md-8"><h1>{{ $editing ? 'Edit Badge' : 'Add Badge' }}</h1></div><div class="col-md-4"><div class="admin-header-actions"><a class="btn btn-admin-muted" href="{{ route('admin.engagement.badges') }}"><i class="fa-solid fa-arrow-left"></i>Badges</a></div></div></div></div></section>
+  <section class="content"><div class="container-fluid">@if($errors->any())<div class="alert alert-danger">{{ $errors->first() }}</div>@endif<div class="admin-panel"><form method="POST" action="{{ $editing ? route('admin.engagement.badges.update', $badge->id) : route('admin.engagement.badges.store') }}">@csrf @if($editing) @method('PATCH') @endif
+    <div class="row"><div class="col-md-6"><div class="form-group"><label>Key</label><input class="form-control" name="key" required value="{{ old('key', $badge->key ?? '') }}" placeholder="network-builder"></div></div><div class="col-md-6"><div class="form-group"><label>Name</label><input class="form-control" name="name" required value="{{ old('name', $badge->name ?? '') }}"></div></div></div>
+    <div class="form-group"><label>Description</label><textarea class="form-control" name="description" rows="3">{{ old('description', $badge->description ?? '') }}</textarea></div>
+    <div class="row"><div class="col-md-4"><div class="form-group"><label>Icon</label><input class="form-control" name="icon" value="{{ old('icon', $badge->icon ?? '') }}" placeholder="award"></div></div><div class="col-md-4"><div class="form-group"><label>Category</label><input class="form-control" name="category" value="{{ old('category', $badge->category ?? '') }}"></div></div><div class="col-md-2"><div class="form-group"><label>Sort Order</label><input type="number" min="0" class="form-control" name="sort_order" required value="{{ old('sort_order', $badge->sort_order ?? 0) }}"></div></div><div class="col-md-2"><div class="form-group"><label>Status</label><input type="hidden" name="is_active" value="0"><div class="form-check mt-2"><input type="checkbox" class="form-check-input" id="badge_active" name="is_active" value="1" @if(old('is_active', $badge->is_active ?? 1)) checked @endif><label class="form-check-label" for="badge_active">Active</label></div></div></div></div>
+    <button class="btn btn-admin-primary" type="submit"><i class="fa-solid fa-floppy-disk"></i>Save Badge</button>
+  </form></div></div></section>
+</div>
+@include('admin.includes.footer')

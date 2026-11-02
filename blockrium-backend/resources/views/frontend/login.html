@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="Nirwana Crypto - HTML5 Bootstrap Template">
+  <meta name="viewport" content="minimum-scale=1,initial-scale=1,width=device-width,shrink-to-fit=no">
+  <!-- Favicon-->
+  <link rel="shortcut icon" href="./assets/favicons/favicon.ico">
+  <link rel="apple-touch-icon" sizes="57x57" href="./assets/favicons/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="./assets/favicons/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="./assets/favicons/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="./assets/favicons/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="./assets/favicons/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="./assets/favicons/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="./assets/favicons/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="./assets/favicons/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="./assets/favicons/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="./assets/favicons/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="./assets/favicons/favicon-16x16.png">
+  <link rel="manifest" href="./assets/favicons/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="./assets/favicons/ms-icon-144x144.png">
+  <!-- PWA primary color-->
+  <meta name="theme-color" content="#9C27B0">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,500,600&amp;display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Facebook-->
+  <meta property="author" content="nirwana">
+  <meta property="og:site_name" content="alexstrap.ux-maestro.com">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:type" content="website">
+  <!-- Twitter-->
+  <meta property="twitter:site" content="nirwana.ux-maestro.com">
+  <meta property="twitter:domain" content="nirwana.ux-maestro.com">
+  <meta property="twitter:creator" content="nirwana">
+  <meta property="twitter:card" content="summary">
+  <meta property="twitter:image:src" content="./assets/images/logo-crypto.png">
+  <meta property="og:url" content="nirwana.indisains.com/crypto">
+  <meta property="og:title" content="Crypto">
+  <meta property="og:description" content="Nirwana Crypto - HTML5 Bootstrap Template">
+  <meta name="twitter:site" content="nirwana.indisains.com/crypto">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="/images/logo-crypto.png">
+  <meta property="og:image" content="/images/logo-crypto.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <title>Crypto - Login</title>
+  <!-- Styles-->
+  <link href="./assets/css/crypto-bundle.min.css" rel="stylesheet">
+</head>
+
+<body>
+  <div id="preloader" style="position: fixed; z-index: 10000; background: #fafafa; width: 100%; height: 100%"><img style="opacity: 0.2; position: fixed; top: calc(50% - 50px); left: calc(50% - 50px)" src="./assets/images/loading.gif" alt="loading"></div>
+  <div class="invisible-deco"><svg width="38px" height="43px" viewbox="0 0 38 43" version="1.1"><defs><lineargradient id="titleLinearGradient-1" x1="34.5063846%" y1="15.1303808%" x2="20.8153155%" y2="110.664023%"><stop stop-color="#9C27B0" offset="0%"></stop><stop stop-color="#FFA000" offset="100%"></stop></lineargradient></defs><defs><lineargradient id="hexaLinearGradient-3" x1="66.8412844%" y1="30.62426%" x2="-21.0581447%" y2="100%"><stop stop-color="#FFA000" offset="0%"></stop><stop stop-color="#FFECB3" offset="100%"></stop></lineargradient></defs><defs><lineargradient id="hexaLinearGradient-2" x1="66.8412844%" y1="30.62426%" x2="-21.0581447%" y2="100%"><stop stop-color="#9C27B0" offset="0%"></stop><stop stop-color="#E1BEE7" offset="100%"></stop></lineargradient></defs><defs><lineargradient id="frmDecoLinearGradient-1" x1="33.650521%" y1="14.3140713%" x2="18.9688557%" y2="110.664023%"><stop stop-color="#9C27B0" offset="0%"></stop><stop stop-color="#FFA000" offset="100%"></stop></lineargradient></defs></svg></div>
+  <div class="m-application theme--light transition-page" id="app">
+    <div class="loading"></div>
+    <div class="m-content coinz coinz-var" id="main-wrap">
+      <div>
+        <div class="btn-float-opt"><button class="btn btn-icon waves-effect" id="open_palette"><i class="material-icons">palette</i></button><button class="btn btn-icon waves-effect" id="open_layouts"><i class="material-icons">web</i></button><button class="btn btn-icon waves-effect" id="open_explore"><i class="material-icons">library_books</i></button></div>
+        <div class="sidenav-opt drawer-opt" id="slidemenu">
+          <div class="opt-wrap">
+            <div class="hidden-sm-up">
+              <div class="btn-icon waves-effect" id="close_sideright"><i class="material-icons">arrow_back</i></div>
+            </div>
+            <ul class="tabs">
+              <li class="tab tab-label"><a class="active" href="#palette_options"><i class="material-icons">palette</i>Theme</a></li>
+              <li class="tab tab-label"><a href="#layouts_options"><i class="material-icons">web</i>Layouts</a></li>
+              <li class="tab tab-label"><a href="#explore_theme"><i class="material-icons">library_books</i>Explore</a></li>
+            </ul>
+            <div class="tab-item" id="palette_options">
+              <div>
+                <div class="theme-switched">
+                  <div class="card paper">
+                    <div class="row">
+                      <div class="col-sm-6 margin-bottom">
+                        <h6 class="title">Theme Mode</h6>
+                        <div class="switch switch-toggle"><label class="overline">Light<input id="theme_switcher_side" type="checkbox"><span class="lever"></span>Dark</label></div>
+                      </div>
+                      <div class="col-sm-6">
+                        <h6 class="title">Layout Direction</h6>
+                        <div class="switch switch-toggle"><label class="overline">LTR<input id="dir_switcher_side" type="checkbox"><span class="lever"></span>RTL<br><i class="caption">Best view in arabic</i></label></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="image-switched">
+                  <div class="card paper">
+                    <div class="row mb-0">
+                      <div class="col-sm-6 margin-bottom">
+                        <h6 class="title">Theme Illustration</h6>
+                      </div>
+                      <div class="col-sm-6">
+                        <div class="switch switch-toggle"><label class="overline">2D<input id="image_switcher_side" type="checkbox" checked="checked"><span class="lever"></span>3D</label></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="theme-color">
+                  <div class="card paper">
+                    <h6 class="title">Color Combination</h6>
+                    <div class="row">
+                      <div class="col-sm-3 col-6 my-1">
+                        <div class="swatch waves-effect tooltipped" data-position="top" data-tooltip="joker" data-color="joker"><span class="primary-swatch" style="background: #673AB7">&nbsp;</span><span class="secondary-swatch" style="background: #00BCD4">&nbsp;</span><span class="accent-swatch" style="background: #E91E63">&nbsp;</span></div>
+                      </div>
+                      <div class="col-sm-3 col-6 my-1">
+                        <div class="swatch waves-effect tooltipped" data-position="top" data-tooltip="violeta" data-color="violeta"><span class="primary-swatch" style="background: #9C27B0">&nbsp;</span><span class="secondary-swatch" style="background: #8BC34A">&nbsp;</span><span class="accent-swatch" style="background: #FFC107">&nbsp;</span></div>
+                      </div>
+                      <div class="col-sm-3 col-6 my-1">
+                        <div class="swatch waves-effect tooltipped" data-position="top" data-tooltip="purple" data-color="purple"><span class="primary-swatch" style="background: #9c27b0">&nbsp;</span><span class="secondary-swatch" style="background: #aa00ff">&nbsp;</span><span class="accent-swatch" style="background: #304FFE">&nbsp;</span></div>
+                      </div>
+                      <div class="col-sm-3 col-6 my-1">
+                        <div class="swatch waves-effect tooltipped" data-position="top" data-tooltip="passion" data-color="passion"><span class="primary-swatch" style="background: #E91E63">&nbsp;</span><span class="secondary-swatch" style="background: #304FFE">&nbsp;</span><span class="accent-swatch" style="background: #673ab7">&nbsp;</span></div>
+                      </div>
+                      <div class="col-sm-3 col-6 my-1">
+                        <div class="swatch waves-effect tooltipped" data-position="top" data-tooltip="burgundy" data-color="burgundy"><span class="primary-swatch" style="background: #e91e63">&nbsp;</span><span class="secondary-swatch" style="background: #2196f3">&nbsp;</span><span class="accent-swatch" style="background: #673ab7">&nbsp;</span></div>
+                      </div>
+                      <div class="col-sm-3 col-6 my-1">
+                        <div class="swatch waves-effect tooltipped" data-position="top" data-tooltip="vampire" data-color="vampire"><span class="primary-swatch" style="background: #f44336">&nbsp;</span><span class="secondary-swatch" style="background: #607D8B">&nbsp;</span><span class="accent-swatch" style="background: #00BCD4">&nbsp;</span></div>
+                      </div>
+                      <div class="col-sm-3 col-6 my-1">
+                        <div class="swatch waves-effect tooltipped" data-position="top" data-tooltip="roseGold" data-color="roseGold"><span class="primary-swatch" style="background: #EC407A">&nbsp;</span><span class="secondary-swatch" style="background: #FFA000">&nbsp;</span><span class="accent-swatch" style="background: #00BCD4">&nbsp;</span></div>
+                      </div>
+                      <div class="col-sm-3 col-6 my-1">
+                        <div class="swatch waves-effect tooltipped" data-position="top" data-tooltip="violet" data-color="violet"><span class="primary-swatch" style="background: #EC407A">&nbsp;</span><span class="secondary-swatch" style="background: #673AB7">&nbsp;</span><span class="accent-swatch" style="background: #FFC107">&nbsp;</span></div>
+                      </div>
+                      <div class="col-sm-3 col-6 my-1">
+                        <div class="swatch waves-effect tooltipped" data-position="top" data-tooltip="coinz" data-color="coinz"><span class="primary-swatch" style="background: #EF6C00">&nbsp;</span><span class="secondary-swatch" style="background: #9C27B0">&nbsp;</span><span class="accent-swatch" style="background: #673AB7">&nbsp;</span></div>
+                      </div>
+                      <div class="col-sm-3 col-6 my-1">
+                        <div class="swatch waves-effect tooltipped" data-position="top" data-tooltip="gold" data-color="gold"><span class="primary-swatch" style="background: #FF9100">&nbsp;</span><span class="secondary-swatch" style="background: #8D6E63">&nbsp;</span><span class="accent-swatch" style="background: #FF9800">&nbsp;</span></div>
+                      </div>
+                      <div class="col-sm-3 col-6 my-1">
+                        <div class="swatch waves-effect tooltipped" data-position="top" data-tooltip="deepBlue" data-color="deepBlue"><span class="primary-swatch" style="background: #3F51B5">&nbsp;</span><span class="secondary-swatch" style="background: #03A9F4">&nbsp;</span><span class="accent-swatch" style="background: #304FFE">&nbsp;</span></div>
+                      </div>
+                      <div class="col-sm-3 col-6 my-1">
+                        <div class="swatch waves-effect tooltipped" data-position="top" data-tooltip="mint" data-color="mint"><span class="primary-swatch" style="background: #2196f3">&nbsp;</span><span class="secondary-swatch" style="background: #03a9f4">&nbsp;</span><span class="accent-swatch" style="background: #E91E63">&nbsp;</span></div>
+                      </div>
+                      <div class="col-sm-3 col-6 my-1">
+                        <div class="swatch waves-effect tooltipped" data-position="top" data-tooltip="fresh" data-color="fresh"><span class="primary-swatch" style="background: #03ACF2">&nbsp;</span><span class="secondary-swatch" style="background: #4CAF50">&nbsp;</span><span class="accent-swatch" style="background: #E91E63">&nbsp;</span></div>
+                      </div>
+                      <div class="col-sm-3 col-6 my-1">
+                        <div class="swatch waves-effect tooltipped" data-position="top" data-tooltip="ocean-blue" data-color="ocean-blue"><span class="primary-swatch" style="background: #2196f3">&nbsp;</span><span class="secondary-swatch" style="background: #00bcd4">&nbsp;</span><span class="accent-swatch" style="background: #651FFF">&nbsp;</span></div>
+                      </div>
+                      <div class="col-sm-3 col-6 my-1">
+                        <div class="swatch waves-effect tooltipped" data-position="top" data-tooltip="cloud" data-color="cloud"><span class="primary-swatch" style="background: #03A9F4">&nbsp;</span><span class="secondary-swatch" style="background: #FF9800">&nbsp;</span><span class="accent-swatch" style="background: #673AB7">&nbsp;</span></div>
+                      </div>
+                      <div class="col-sm-3 col-6 my-1">
+                        <div class="swatch waves-effect tooltipped" data-position="top" data-tooltip="littleQueen" data-color="littleQueen"><span class="primary-swatch" style="background: #00BCD4">&nbsp;</span><span class="secondary-swatch" style="background: #F06292">&nbsp;</span><span class="accent-swatch" style="background: #304FFE">&nbsp;</span></div>
+                      </div>
+                      <div class="col-sm-3 col-6 my-1">
+                        <div class="swatch waves-effect tooltipped" data-position="top" data-tooltip="smart" data-color="smart"><span class="primary-swatch" style="background: #00BCD4">&nbsp;</span><span class="secondary-swatch" style="background: #FFA000">&nbsp;</span><span class="accent-swatch" style="background: #E91E63">&nbsp;</span></div>
+                      </div>
+                      <div class="col-sm-3 col-6 my-1">
+                        <div class="swatch waves-effect tooltipped" data-position="top" data-tooltip="botani" data-color="botani"><span class="primary-swatch" style="background: #689F38">&nbsp;</span><span class="secondary-swatch" style="background: #F06292">&nbsp;</span><span class="accent-swatch" style="background: #00BCD4">&nbsp;</span></div>
+                      </div>
+                      <div class="col-sm-3 col-6 my-1">
+                        <div class="swatch waves-effect tooltipped" data-position="top" data-tooltip="money" data-color="money"><span class="primary-swatch" style="background: #4CAF50">&nbsp;</span><span class="secondary-swatch" style="background: #FFA000">&nbsp;</span><span class="accent-swatch" style="background: #2196F3">&nbsp;</span></div>
+                      </div>
+                      <div class="col-sm-3 col-6 my-1">
+                        <div class="swatch waves-effect tooltipped" data-position="top" data-tooltip="green-leaf" data-color="green-leaf"><span class="primary-swatch" style="background: #009688">&nbsp;</span><span class="secondary-swatch" style="background: #607D8B">&nbsp;</span><span class="accent-swatch" style="background: #B2EBF2">&nbsp;</span></div>
+                      </div>
+                      <div class="col-sm-3 col-6 my-1">
+                        <div class="swatch waves-effect tooltipped" data-position="top" data-tooltip="greenNature" data-color="greenNature"><span class="primary-swatch" style="background: #009688">&nbsp;</span><span class="secondary-swatch" style="background: #689F38">&nbsp;</span><span class="accent-swatch" style="background: #00BCD4">&nbsp;</span></div>
+                      </div>
+                      <div class="col-sm-3 col-6 my-1">
+                        <div class="swatch waves-effect tooltipped" data-position="top" data-tooltip="brown" data-color="brown"><span class="primary-swatch" style="background: #795548">&nbsp;</span><span class="secondary-swatch" style="background: #794848">&nbsp;</span><span class="accent-swatch" style="background: #FFC107">&nbsp;</span></div>
+                      </div>
+                      <div class="col-sm-3 col-6 my-1">
+                        <div class="swatch waves-effect tooltipped" data-position="top" data-tooltip="grayscale" data-color="grayscale"><span class="primary-swatch" style="background: #546E7A">&nbsp;</span><span class="secondary-swatch" style="background: #6D4C41">&nbsp;</span><span class="accent-swatch" style="background: #304FFE">&nbsp;</span></div>
+                      </div>
+                      <div class="col-sm-3 col-6 my-1">
+                        <div class="swatch waves-effect tooltipped" data-position="top" data-tooltip="black" data-color="black"><span class="primary-swatch" style="background: #212121">&nbsp;</span><span class="secondary-swatch" style="background: #757575">&nbsp;</span><span class="accent-swatch" style="background: #304FFE">&nbsp;</span></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="tab-item" id="layouts_options">
+              <div class="theme-switched">
+                <div class="card paper">
+                  <h6 class="title">Header Layout</h6>
+                  <div class="row" id="custom_header">
+                    <div class="col-6 pa-0 pa-sm-2"><a class="waves-effect ly-btn mb-8 active" data-header="mixed"><img src="./assets/images/showcase/header_default.jpg" alt="mixed">Mixed</a> <a class="waves-effect ly-btn mb-8" data-header="basic"><img src="./assets/images/showcase/header_basic.jpg" alt="basic">Basic</a> <a class="waves-effect ly-btn mb-8" data-header="search"><img src="./assets/images/showcase/header_search.jpg" alt="search">Search</a> <a class="waves-effect ly-btn mb-8" data-header="navscroll"><img src="./assets/images/showcase/header_nav.jpg" alt="navscroll">Scroll Nav</a></div>
+                    <div class="col-6 pa-0 pa-sm-2"><a class="waves-effect ly-btn mb-8" data-header="droplist"><img src="./assets/images/showcase/header_droplist.jpg" alt="droplist">Dropdown List</a> <a class="waves-effect ly-btn mb-8" data-header="mega"><img src="./assets/images/showcase/header_mega.jpg" alt="mega">Mega Menu</a> <a class="waves-effect ly-btn mb-8" data-header="hamburger"><img src="./assets/images/showcase/header_hamburger.jpg" alt="hamburger">Hamburger</a></div>
+                  </div>
+                </div>
+                <div class="card paper">
+                  <h6 class="title">Footer Layout</h6>
+                  <div class="row" id="custom_footer">
+                    <div class="col-6 pa-0 pa-sm-2"><a class="waves-effect waves-effect ly-btn mb-8 active" data-footer="sitemap"><img src="./assets/images/showcase/footer_sitemap.jpg" alt="sitemap">Sitemap</a></div>
+                    <div class="col-6 pa-0 pa-sm-2"><a class="waves-effect ly-btn mb-8" data-footer="blog"><img src="./assets/images/showcase/footer_blog.jpg" alt="blog">Blog</a></div>
+                    <div class="col-6 pa-0 pa-sm-2"><a class="waves-effect ly-btn mb-8" data-footer="basic"><img src="./assets/images/showcase/footer_basic.jpg" alt="basic">Basic</a></div>
+                    <div class="col-6 pa-0 pa-sm-2"><a class="waves-effect ly-btn mb-8" data-footer="contact"><img src="./assets/images/showcase/footer_contact.jpg" alt="contact">Contact</a></div>
+                  </div>
+                </div>
+                <div class="card paper">
+                  <h6 class="title">Bottom Corner</h6>
+                  <div class="row" id="custom_corner">
+                    <div class="col-6 col-sm-4 pa-0 pa-sm-2"><a class="waves-effect active ly-btn mb-8" data-corner="chat"><img src="./assets/images/showcase/chat.jpg" alt="chat">Chat Panel</a></div>
+                    <div class="col-6 col-sm-4 pa-0 pa-sm-2"><a class="waves-effect ly-btn mb-8" data-corner="nav"><img src="./assets/images/showcase/pagenav.jpg" alt="pagenav">Page Navigation</a></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="tab-item" id="explore_theme">
+              <div class="explore">
+                <ul>
+                  <li>
+                    <a href="https://nirwana.vercel.app/saas/en/index.html" target="_blank">
+                      <figure><img src="https://ik.imagekit.io/q5gfy1zcvl/skyrev/saas_agwJ9Vd7F.jpg" alt="SaaS"></figure>SaaS</a>
+                  </li>
+                  <li>
+                    <a href="https://nirwana.vercel.app/agency/en/index.html" target="_blank">
+                      <figure><img src="https://ik.imagekit.io/q5gfy1zcvl/skyrev/agency_UXQv8nJCcFt.jpg" alt="agency"></figure>agency</a>
+                  </li>
+                  <li>
+                    <a href="https://nirwana.vercel.app/crypto/en/index.html" target="_blank">
+                      <figure><img src="https://ik.imagekit.io/q5gfy1zcvl/skyrev/crypto_Ws7Q2_mGM.jpg" alt="cryptocurrency"></figure>cryptocurrency</a>
+                  </li>
+                  <li>
+                    <a href="https://nirwana.vercel.app/cloud/en/index.html" target="_blank">
+                      <figure><img src="https://ik.imagekit.io/q5gfy1zcvl/skyrev/cloud_8iwHSvOd9.jpg" alt="cloud hosting"></figure>cloud hosting</a>
+                  </li>
+                  <li>
+                    <a href="https://nirwana.vercel.app/education/en/index.html" target="_blank">
+                      <figure><img src="https://ik.imagekit.io/q5gfy1zcvl/skyrev/education_CN9sSEEGn.jpg" alt="education"></figure>education</a>
+                  </li>
+                  <li>
+                    <a href="https://nirwana.vercel.app/fintech/en/index.html" target="_blank">
+                      <figure><img src="https://ik.imagekit.io/q5gfy1zcvl/skyrev/fintech_2fqQd_Bkxt.jpg" alt="fintech"></figure>fintech</a>
+                  </li>
+                  <li>
+                    <a href="https://nirwana.vercel.app/social-apps/en/index.html" target="_blank">
+                      <figure><img src="https://ik.imagekit.io/q5gfy1zcvl/skyrev/social_ki4WinkmD.jpg" alt="social media apps"></figure>social media apps</a>
+                  </li>
+                  <li>
+                    <a href="https://nirwana.vercel.app/marketing/en/index.html" target="_blank">
+                      <figure><img src="https://ik.imagekit.io/q5gfy1zcvl/skyrev/marketing_XyQ2TrNrB.jpg" alt="marketing"></figure>marketing</a>
+                  </li>
+                  <li>
+                    <a href="https://nirwana.vercel.app/medical/en/index.html" target="_blank">
+                      <figure><img src="https://ik.imagekit.io/q5gfy1zcvl/skyrev/medical_CvNBZS87K.jpg" alt="medical"></figure>medical</a>
+                  </li>
+                  <li>
+                    <a href="https://nirwana.vercel.app/retail/en/index.html" target="_blank">
+                      <figure><img src="https://ik.imagekit.io/q5gfy1zcvl/skyrev/product_sales_pGLKD-9yw.jpg" alt="retail"></figure>retail</a>
+                  </li>
+                  <li>
+                    <a href="https://nirwana.vercel.app/saas2/en/index.html" target="_blank">
+                      <figure><img src="https://ik.imagekit.io/q5gfy1zcvl/skyrev/saas2_93a52OcEcR4.jpg" alt="Software"></figure>Software</a>
+                  </li>
+                  <li>
+                    <a href="https://ilhammeidi.github.io/nirwana-docs" target="_blank">
+                      <figure><img src="https://ik.imagekit.io/q5gfy1zcvl/docs_G4-Yw2hVC.jpg" alt="documentation"></figure>documentation</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="register-page">
+        <div class="main-wrap">
+          <!-- #### HEADER ####-->
+          <header class="app-bar header" id="header">
+            <div class="container">
+              <div class="header-content">
+                <nav class="nav-menu flex-grow-1">
+                  <div class="logo flex-grow-1 start-mobile"><a href="index.html"><span class="logo-main landscape large"><img src="./assets/images/logo-crypto.png" alt="logo">Crypto</span></a></div>
+                  <nav class="user-menu"><a class="btn secondary waves-effect" href="register.html">register</a> <span class="spacer vertical-divider show-md-up"></span>
+                    <div class="menu-setting">
+                      <div class="setting"><button class="btn btn-icon waves-effect btn-small dropdown-trigger ma-1" data-target="dropdown_config" data-align="left" type="button"><i class="icon material-icons" id="setting_icon">settings</i></button>
+                        <div class="dropdown-content setting" id="dropdown_config">
+                          <ul class="collection with-header">
+                            <li class="collection-header">theme mode</li>
+                            <li class="collection-item no-hover pl-4">
+                              <div class="flex-menu">
+                                <div class="switch"><label>light <input id="theme_switcher" type="checkbox"><span class="lever"></span> dark</label></div>
+                              </div>
+                            </li>
+                          </ul>
+                          <div class="dropdown-divider"></div>
+                          <ul class="collection with-header lang-menu" id="lang_menu">
+                            <li class="collection-header">language</li>
+                            <li class="collection-item lang-list waves-effect avatar">
+                              <a data-lang="ar" href="#">
+                                <div class="flag circle"><i class="ar"></i></div><span class="content lang-opt text-truncate">󠁥󠁮󠁧󠁿العربيّة</span></a>
+                            </li>
+                            <li class="collection-item lang-list waves-effect avatar">
+                              <a data-lang="de" href="#">
+                                <div class="flag circle"><i class="de"></i></div><span class="content lang-opt text-truncate">Deutsch</span></a>
+                            </li>
+                            <li class="collection-item lang-list waves-effect avatar">
+                              <a data-lang="en" href="#">
+                                <div class="flag circle"><i class="en"></i></div><span class="content lang-opt text-truncate">English</span></a>
+                            </li>
+                            <li class="collection-item lang-list waves-effect avatar">
+                              <a data-lang="id" href="#">
+                                <div class="flag circle"><i class="id"></i></div><span class="content lang-opt text-truncate">󠁥󠁮󠁧󠁿Bahasa Indonesia</span></a>
+                            </li>
+                            <li class="collection-item lang-list waves-effect avatar">
+                              <a data-lang="pt" href="#">
+                                <div class="flag circle"><i class="pt"></i></div><span class="content lang-opt text-truncate">󠁥󠁮󠁧󠁿Português</span></a>
+                            </li>
+                            <li class="collection-item lang-list waves-effect avatar">
+                              <a data-lang="zh" href="#">
+                                <div class="flag circle"><i class="zh"></i></div><span class="content lang-opt text-truncate">简体中文</span></a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </nav>
+                </nav>
+              </div>
+            </div>
+          </header>
+          <!-- #### END HEADER ####-->
+          <!-- ##### FORM #####-->
+          <div class="container-general container-front">
+            <div class="form-style">
+              <div class="page-wrap">
+                <div class="hexa-deco">
+                  <div class="deco-bg"></div>
+                </div>
+                <div class="container inner-wrap">
+                  <div class="auth-frame">
+                    <div class="row mb-0">
+                      <div class="col-md-6 px-lg-6 px-2">
+                        <div class="card form-box fragment-fadeUp">
+                          <div class="form-wrap">
+                            <div class="form-style">
+                              <div class="head">
+                                <h4 class="use-text-title mq-md-up" data-class="use-text-subtitle">Welcome back</h4>
+                              </div>
+                              <div class="socmed-side-login"><button class="btn navi-btn waves-effect"><i class="ion-social-facebook left"></i>Facebook</button> <button class="btn blue-btn waves-effect"><i class="ion-social-twitter left"></i>Twitter</button> <button class="btn red-btn waves-effect"><i class="ion-social-google left"></i>Google</button></div>
+                              <div class="separator">
+                                <p>Or login with email</p>
+                              </div>
+                              <form id="login_form">
+                                <div class="row spacing3 mb-0">
+                                  <div class="col-sm-12">
+                                    <div class="input-field filled"><input class="validate" id="email" type="email" name="email" required> <label for="email">Email</label></div>
+                                  </div>
+                                  <div class="col-sm-12">
+                                    <div class="input-field filled"><input class="validate" id="password" type="password" name="password" required> <label for="password">Password</label></div>
+                                  </div>
+                                </div>
+                                <div class="form-helper mt-sm-4">
+                                  <div class="form-control-label"><label><input class="filled-in secondary" type="checkbox"> <span>Remember</span></label></div><a class="btn-flat button-link" href="#">Forgot Password</a></div>
+                                <div class="btn-area"><button class="btn primary btn-large block waves-effect" type="submit">Continue</button></div>
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="hidden-sm-down">
+                          <div class="greeting">
+                            <h4 class="use-text-title2 use-text-primary pb-2">Please login to continue</h4>
+                            <h6 class="use-text-subtitle2">A platform with efficient integration of many features and so much more</h6>
+                            <div class="img"><img class="img-2d3d" src="https://res.cloudinary.com/skyrev/image/upload/v1613841817/skyrev/crypto/login_3d_2x_cxu18l.png" data-2d="https://res.cloudinary.com/skyrev/image/upload/v1613841818/skyrev/crypto/login_2d_2x_q3shbu.png" data-3d="https://res.cloudinary.com/skyrev/image/upload/v1613841817/skyrev/crypto/login_3d_2x_cxu18l.png" alt="login"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- ##### END FORM #####-->
+          <!-- ##### FOOTER #####-->
+          <div class="footer-counter"><span class="deco"></span>
+            <div>
+              <footer class="footer-sitemap">
+                <div class="container mq-sm-down" data-class="fixed-width">
+                  <div class="row mb-0">
+                    <div class="col-md-3 pa-lg-4 logo-area">
+                      <div class="logo"><span class="logo-main landscape large"><img src="./assets/images/logo-crypto.png" alt="logo">Crypto</span></div>
+                      <p class="body-2">This international trading platform provides innovative tokens a more streamlined approach.</p>
+                      <p class="body-2 hidden-sm-down">&copy; Nirwana Theme 2022</p>
+                    </div>
+                    <div class="col-md-6 pa-4">
+                      <ul class="show-sm-down collapsible">
+                        <li class="accordion-content">
+                          <div class="collapsible-header">
+                            <h6 class="title">Company</h6><i class="material-icons right arrow">expand_more</i></div>
+                          <div class="collapsible-body">
+                            <ul>
+                              <li><a href="#team">Team</a></li>
+                              <li><a href="#history">History</a></li>
+                              <li><a href="#contact-us">Contact us</a></li>
+                              <li><a href="#locations">Locations</a></li>
+                            </ul>
+                          </div>
+                        </li>
+                        <li class="accordion-content">
+                          <div class="collapsible-header">
+                            <h6 class="title">Resources</h6><i class="material-icons right arrow">expand_more</i></div>
+                          <div class="collapsible-body">
+                            <ul>
+                              <li><a href="#resource">Resource</a></li>
+                              <li><a href="#resource-name">Resource name</a></li>
+                              <li><a href="#another-resource">Another resource</a></li>
+                              <li><a href="#final-resource">Final resource</a></li>
+                            </ul>
+                          </div>
+                        </li>
+                        <li class="accordion-content">
+                          <div class="collapsible-header">
+                            <h6 class="title">Legal</h6><i class="material-icons right arrow">expand_more</i></div>
+                          <div class="collapsible-body">
+                            <ul>
+                              <li><a href="#privacy-policy">Privacy policy</a></li>
+                              <li><a href="#terms-of-use">Terms of use</a></li>
+                            </ul>
+                          </div>
+                        </li>
+                      </ul>
+                      <div class="row show-md-up justify-content-around">
+                        <div class="col pa-4 site-map-item">
+                          <h6 class="title mb-4">Company</h6>
+                          <ul>
+                            <li><a href="#team">Team</a></li>
+                            <li><a href="#history">History</a></li>
+                            <li><a href="#contact-us">Contact us</a></li>
+                            <li><a href="#locations">Locations</a></li>
+                          </ul>
+                        </div>
+                        <div class="col pa-4 site-map-item">
+                          <h6 class="title mb-4">Resources</h6>
+                          <ul>
+                            <li><a href="#resource">Resource</a></li>
+                            <li><a href="#resource-name">Resource name</a></li>
+                            <li><a href="#another-resource">Another resource</a></li>
+                            <li><a href="#final-resource">Final resource</a></li>
+                          </ul>
+                        </div>
+                        <div class="col pa-4 site-map-item">
+                          <h6 class="title mb-4">Legal</h6>
+                          <ul>
+                            <li><a href="#privacy-policy">Privacy policy</a></li>
+                            <li><a href="#terms-of-use">Terms of use</a></li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-3 pa-4">
+                      <div class="socmed"><a class="btn btn-icon waves-effect"><span class="ion-social-facebook icon"></span></a> <a class="btn btn-icon waves-effect"><span class="ion-social-twitter icon"></span></a> <a class="btn btn-icon waves-effect"><span class="ion-social-instagram icon"></span></a> <a class="btn btn-icon waves-effect"><span class="ion-social-linkedin icon"></span></a></div>
+                      <div class="select-lang select-outlined"><select class="select" id="lang_select"><option value="ar">󠁥󠁮󠁧󠁿العربيّة</option><option value="de">Deutsch</option><option value="en" selected="selected">English</option><option value="id">󠁥󠁮󠁧󠁿Bahasa Indonesia</option><option value="pt">󠁥󠁮󠁧󠁿Português</option><option value="zh">简体中文</option></select></div>
+                      <p class="body-2 mt-5 text-center hidden-md-up">&copy; Nirwana Theme 2022</p>
+                    </div>
+                  </div>
+                </div>
+              </footer>
+            </div>
+          </div>
+          <!-- ##### END FOOTER #####-->
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Scripts-->
+  <script src="./assets/js/crypto-bundle.min.js"></script>
+  <script async="" defer="" src="https://maps.googleapis.com/maps/api/js?callback=initMap"></script>
+</body>
+
+</html>

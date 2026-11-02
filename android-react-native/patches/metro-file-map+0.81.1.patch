@@ -1,0 +1,17 @@
+diff --git a/node_modules/metro-file-map/src/Watcher.js b/node_modules/metro-file-map/src/Watcher.js
+index dcab178..856b105 100644
+--- a/node_modules/metro-file-map/src/Watcher.js
++++ b/node_modules/metro-file-map/src/Watcher.js
+@@ -125,6 +125,12 @@ class Watcher extends _events.default {
+     }
+   }
+   async watch(onChange) {
++    if (process.env.METRO_DISABLE_FILE_WATCHER_FOR_BUNDLE === "1") {
++      this._backends = [];
++      this._activeWatcher = null;
++      return;
++    }
++
+     const { extensions, ignorePatternForWatch, useWatchman } = this._options;
+     const WatcherImpl = useWatchman
+       ? _WatchmanWatcher.default

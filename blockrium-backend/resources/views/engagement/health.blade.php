@@ -1,0 +1,23 @@
+@include('admin.includes.header')
+@include('admin.includes.sidebar')
+<div class="content-wrapper admin-content">
+  <section class="content-header admin-page-header"><div class="container-fluid"><div class="row align-items-center"><div class="col-md-8"><h1>Production Health</h1><p>Sanitized route, database, duplicate-protection, and error checks.</p></div><div class="col-md-4"><div class="admin-header-actions"><span class="btn btn-admin-muted"><i class="fa-solid fa-rotate"></i>{{ $checked_at->format('d M Y, h:i A') }}</span></div></div></div></div></section>
+  <section class="content"><div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-6 mb-4"><div class="admin-panel h-100"><div class="admin-panel-header"><div><h2>API Routes</h2></div></div><table class="table admin-table"><tbody>@foreach($routes as $route)<tr><td><code>{{ $route['uri'] }}</code></td><td class="text-right"><span class="admin-badge {{ $route['available'] ? 'admin-badge-success' : 'admin-badge-muted' }}">{{ $route['available'] ? 'Available' : 'Missing' }}</span></td></tr>@endforeach</tbody></table></div></div>
+      <div class="col-lg-6 mb-4"><div class="admin-panel h-100"><div class="admin-panel-header"><div><h2>Database Tables</h2></div></div><table class="table admin-table"><thead><tr><th>Table</th><th>Status</th><th>Rows</th></tr></thead><tbody>@foreach($tables as $table)<tr><td><code>{{ $table['table'] }}</code></td><td><span class="admin-badge {{ $table['exists'] ? 'admin-badge-success' : 'admin-badge-muted' }}">{{ $table['exists'] ? 'Ready' : 'Missing' }}</span></td><td>{{ $table['rows'] === null ? '—' : number_format($table['rows']) }}</td></tr>@endforeach</tbody></table></div></div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12 mb-4"><div class="admin-panel"><div class="admin-panel-header"><div><h2>Trust & Learn Metrics</h2><p>Counts do not expose wallet secrets, tokens, or private user data.</p></div></div><div class="row">@foreach(['active_trust_sections'=>'Active Trust Sections', 'active_learn_modules'=>'Active Learn Modules', 'completed_lessons'=>'Completed Lessons', 'lesson_completed_xp'=>'Lesson XP Awarded'] as $key=>$label)<div class="col-md-3 mb-3"><span class="admin-stat-label">{{ $label }}</span><div><strong>{{ $metrics[$key] === null ? 'N/A' : number_format($metrics[$key]) }}</strong></div></div>@endforeach</div></div></div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12 mb-4"><div class="admin-panel"><div class="admin-panel-header"><div><h2>Squad Metrics</h2><p>Community activity boost tracking. This is not profit sharing.</p></div></div><div class="row">@foreach(['active_squads'=>'Active Squads', 'active_squad_members'=>'Active Members', 'weekly_chests_claimed'=>'Weekly Chests Claimed', 'squad_chest_xp'=>'Squad Chest XP', 'squad_shares'=>'Tracked Shares', 'active_squad_missions'=>'Active Missions', 'squad_mission_claims'=>'Mission Claims', 'invite_streak_claims'=>'Invite Streak Claims', 'active_squad_announcements'=>'Active Announcements'] as $key=>$label)<div class="col-md-3 mb-3"><span class="admin-stat-label">{{ $label }}</span><div><strong>{{ $squad_metrics[$key] === null ? 'N/A' : number_format($squad_metrics[$key]) }}</strong></div></div>@endforeach</div></div></div>
+    </div>
+    <div class="row">
+      <div class="col-lg-7 mb-4"><div class="admin-panel h-100"><div class="admin-panel-header"><div><h2>Post-release Checks</h2></div></div><table class="table admin-table"><tbody>@foreach($checks as $check)<tr><td>{{ $check['label'] }}</td><td class="text-right"><span class="admin-badge {{ $check['passed'] ? 'admin-badge-success' : 'admin-badge-muted' }}">{{ $check['passed'] ? 'Pass' : 'Review' }}</span></td></tr>@endforeach</tbody></table></div></div>
+      <div class="col-lg-5 mb-4"><div class="admin-panel h-100"><div class="admin-panel-header"><div><h2>Recent Error Indicators</h2><p>Counts from a bounded sanitized log sample.</p></div></div><div class="row">@foreach(['401'=>'401', '500'=>'500', 'milestone'=>'Milestone', 'xp'=>'XP'] as $key=>$label)<div class="col-6 mb-3"><span class="admin-stat-label">{{ $label }}</span><div><strong>{{ $counts[$key] === null ? 'N/A' : number_format($counts[$key]) }}</strong></div></div>@endforeach</div></div></div>
+    </div>
+    <div class="admin-panel mb-4"><div class="admin-panel-header"><div><h2>Last 20 Sanitized Errors</h2><p>Tokens, credentials, request context, and sensitive values are removed.</p></div></div>@forelse($errors as $error)<div class="border-bottom py-2"><code>{{ $error }}</code></div>@empty<div class="admin-empty">No readable recent error entries.</div>@endforelse</div>
+  </div></section>
+</div>
+@include('admin.includes.footer')

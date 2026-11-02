@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Blockrium Account Deletion</title>
+  <meta name="description" content="Request deletion of a Blockrium - Web3 Network app account and associated user data.">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #050b14;
+      --panel: #0e2138;
+      --panel-soft: #132b48;
+      --text: #f4f8ff;
+      --muted: #b7c5da;
+      --line: #27415f;
+      --brand: #31dcc5;
+      --brand-2: #4d92ff;
+      --warn: #f0bd6a;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      background: radial-gradient(circle at 20% 0%, rgba(49, 220, 197, 0.16), transparent 28%),
+        linear-gradient(180deg, #050b14 0%, #071629 100%);
+      color: var(--text);
+      line-height: 1.55;
+    }
+
+    main {
+      width: min(920px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 48px 0;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: linear-gradient(180deg, rgba(19, 43, 72, 0.94), rgba(9, 19, 33, 0.96));
+      box-shadow: 0 22px 80px rgba(0, 0, 0, 0.34);
+      padding: clamp(24px, 4vw, 44px);
+    }
+
+    .eyebrow {
+      color: var(--brand);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin: 0 0 12px;
+    }
+
+    h1 {
+      font-size: clamp(34px, 7vw, 58px);
+      line-height: 1.05;
+      margin: 0 0 16px;
+      letter-spacing: 0;
+    }
+
+    h2 {
+      font-size: 22px;
+      margin: 32px 0 12px;
+    }
+
+    p {
+      margin: 0 0 16px;
+      color: var(--muted);
+      font-size: 17px;
+    }
+
+    ul {
+      margin: 0 0 16px;
+      padding-left: 22px;
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    li {
+      margin: 8px 0;
+    }
+
+    a {
+      color: var(--brand);
+      font-weight: 700;
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin: 28px 0;
+    }
+
+    .button {
+      display: inline-flex;
+      min-height: 54px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      padding: 14px 20px;
+      text-align: center;
+      text-decoration: none;
+      color: #06101b;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      font-weight: 800;
+    }
+
+    .button.secondary {
+      border: 1px solid var(--line);
+      color: var(--text);
+      background: var(--panel-soft);
+    }
+
+    .notice {
+      border: 1px solid rgba(240, 189, 106, 0.45);
+      border-radius: 16px;
+      background: rgba(240, 189, 106, 0.12);
+      color: var(--text);
+      padding: 16px;
+      margin-top: 20px;
+    }
+
+    .notice p {
+      margin: 0;
+    }
+
+    .small {
+      font-size: 14px;
+    }
+
+    @media (max-width: 640px) {
+      main {
+        width: min(100% - 24px, 920px);
+        padding: 24px 0;
+      }
+
+      .actions {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="card">
+      <p class="eyebrow">Blockrium - Web3 Network</p>
+      <h1>Account deletion request</h1>
+      <p>
+        This page lets users of the Blockrium - Web3 Network app request deletion of their app account
+        and associated user data. Blockrium Web3 Technologies reviews deletion requests and completes
+        verified requests within 3 working days.
+      </p>
+
+      <div class="actions">
+        <a class="button" href="mailto:support@blockrium.com?subject=Blockrium%20account%20deletion%20request&body=Please%20delete%20my%20Blockrium%20-%20Web3%20Network%20account.%0A%0ARegistered%20email%3A%0AUser%20ID%20or%20UID%20if%20available%3A%0AReason%20(optional)%3A">
+          Email deletion request
+        </a>
+        <a class="button secondary" href="https://blockrium.com">
+          Visit Blockrium
+        </a>
+      </div>
+
+      <h2>How to request deletion</h2>
+      <ul>
+        <li>Email <a href="mailto:support@blockrium.com">support@blockrium.com</a> from your registered email address.</li>
+        <li>Include your Blockrium user ID, UID, or registered email so we can identify the correct account.</li>
+        <li>You can also open the app and go to Profile or Settings, then choose Delete Account.</li>
+      </ul>
+
+      <h2>Data deleted</h2>
+      <ul>
+        <li>Account profile details such as name, email, username, UID, phone number, and referral code.</li>
+        <li>App wallet reward records, mining reward records, daily reward and task activity, referral activity, and notification tokens linked to the account.</li>
+        <li>Marketing or campaign preferences linked to the app account.</li>
+      </ul>
+
+      <h2>Data retained when required</h2>
+      <ul>
+        <li>Records required for security, fraud prevention, dispute handling, tax, legal, or regulatory compliance may be retained only as long as necessary.</li>
+        <li>Server backups may retain deleted data for up to 30 days before normal backup rotation removes it.</li>
+        <li>Public blockchain transactions cannot be deleted from a blockchain network, but Blockrium deletes the app account data it controls.</li>
+      </ul>
+
+      <div class="notice">
+        <p>
+          Temporary account deactivation is not treated as account deletion. A verified deletion request removes
+          the account data controlled by Blockrium Web3 Technologies.
+        </p>
+      </div>
+
+      <p class="small">
+        Last updated: 3 June 2026. Contact: <a href="mailto:support@blockrium.com">support@blockrium.com</a>.
+      </p>
+    </section>
+  </main>
+</body>
+</html>

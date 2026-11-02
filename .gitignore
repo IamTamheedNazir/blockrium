@@ -1,6 +1,39 @@
+# Generated and environment-specific files
 node_modules/
+dist/
 *.tsbuildinfo
 .env
 .env.*
 !.env.example
-dist/
+
+# Android generated output and signing secrets
+android-react-native/**/build/
+android-react-native/**/.gradle/
+android-react-native/**/.kotlin/
+android-react-native/**/.cxx/
+android-react-native/**/local.properties
+android-react-native/**/*.jks
+android-react-native/**/*.keystore
+android-react-native/**/google-services.json
+android-react-native/**/*upload-key*.properties
+android-react-native/**/*.apk
+android-react-native/**/*.aab
+android-react-native/**/*.log
+android-react-native/android/app/src/main/assets/index.android.bundle
+
+# Backend runtime, dependencies, secrets, exports, and deployment archives
+blockrium-backend/vendor/
+blockrium-backend/storage/framework/cache/
+blockrium-backend/storage/framework/sessions/
+blockrium-backend/storage/framework/views/
+blockrium-backend/storage/logs/
+blockrium-backend/.env
+blockrium-backend/app/Library/*.json
+blockrium-backend/maticlegend-*.json
+blockrium-backend/*.zip
+blockrium-backend/*.sql*
+blockrium-backend/*.dump
+blockrium-backend/*.bak*
+blockrium-backend/*.pem
+blockrium-backend/*.key
+backend-laravel/

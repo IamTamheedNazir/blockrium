@@ -1,4 +1,5 @@
-const API_PREFIX = import.meta.env.VITE_API_PREFIX || '/api/';
+// PWA runs on mine.blockrium.com while the existing Laravel API remains on cPanel.
+const API_PREFIX = import.meta.env.VITE_API_PREFIX || 'https://maticlegend.com/api/';
 const TOKEN_KEY = 'blockrium.web.session.v1';
 
 export type ApiResult<T = any> = { success: boolean; data?: T; error?: string; status?: number };

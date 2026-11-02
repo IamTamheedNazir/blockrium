@@ -1,0 +1,9 @@
+
+google.com, pub-3938789847473580, DIRECT, f08c47fec0942fa0
+yahoo.com, 59636, DIRECT, e1a5b5b6e3255540 #SSP
+indexexchange.com , 175407, RESELLER, 50b1c356f2c5c8fc  #SSP O&O, 3P
+pubmatic.com, 156107, RESELLER, 5d62403b186f2ace  #Display
+rubiconproject.com, 17250, RESELLER, 0bfd66d529a55807
+appnexus.com, 11664, RESELLER
+auxoads.com, acf4a596ca22e84bead4e174f6446b16, DIRECT
+rubiconproject.com,22554, RESELLER, 0bfd66d529a55807

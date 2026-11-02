@@ -1,0 +1,96 @@
+Blockrium backend overlay - 21 Oct 2026 (verified v17)
+
+This is a source overlay for the existing Laravel installation, not a fresh
+Laravel project. It intentionally excludes .env, vendor, storage, logs, cache,
+uploads, and production data.
+
+The current source revalidates sender/recipient membership inside the BRC
+balance transaction and locks involved account/membership rows in stable order.
+It also rejects transfers if either user account is inactive (`res_users.is_active`
+is not `1`), including accounts with an outstanding deletion request.
+Campaign and test emails use a branded HTML layout plus a plain-text
+alternative. The HTML embeds the local brand mark as an inline CID image, so
+email rendering does not depend on the public logo URL or remote-image loading.
+The logo asset is included in the overlay; verify its public URL after
+extraction if the mark is also needed as a standalone web asset.
+Campaign messages also include RFC 8058 one-click unsubscribe headers. Their
+POST target uses the existing signed per-user URL, is rate-limited, and accepts
+only the `List-Unsubscribe=One-Click` marker. The narrowly scoped CSRF exclusion
+is limited to the signed email opt-out path; the footer confirmation form keeps
+its normal session/CSRF protection.
+
+Campaign delivery separates confirmed pre-send queue failures from ambiguous
+SMTP/worker outcomes. Ambiguous outcomes are marked `delivery_unknown`, counted
+separately in the admin panel, and never retried because the SMTP server may
+have accepted the message before a connection dropped. The new additive
+migration adds a campaign counter and conservatively moves legacy `failed`
+recipients to `delivery_unknown`, since older records do not say whether SMTP
+may have accepted them. This favors preventing duplicate mail over retrying
+uncertain recipients.
+
+Admin KYC approval re-reads and locks the current Didit/membership state inside
+a database transaction before marking identity approved. The one-time payment
+reminder is queued only after a newly approved unpaid state is committed;
+approval alone does not activate paid-member access.
+
+Before upload
+1. In cPanel, create and download a full backup of public_html and the database.
+2. Upload this ZIP into /home/vxyxdrvh/public_html and extract it there, keeping
+   the archive's paths. Do not extract it into a nested directory.
+3. Do not replace .env or vendor. Preserve storage contents and bootstrap/cache.
+   Do not extract the older v11 overlay over this release.
+
+After extraction, run:
+
+    cd /home/vxyxdrvh/public_html
+    php artisan optimize:clear
+    php artisan route:list --path=admin/verified-members
+    php artisan route:list --path=admin/email-campaigns
+    php artisan route:list --path=email/bulk-opt-out
+    php artisan migrate:status
+
+Check the route lists for the KYC resend-invite, payment-support, and campaign
+routes, and confirm the signed GET/POST email opt-out routes are present. If a
+route points to a class or method that is missing, stop and restore the backup
+rather than editing route snippets by hand.
+
+Database migrations
+The ZIP includes the full migration source history, including historical feature
+migrations and newer additive migrations. Do not run `php artisan migrate --force`
+blindly. First save the complete `php artisan migrate:status` output and confirm
+the database backup. Review every pending migration against the live schema and
+the feature data it can update. If any old migration is pending, a table exists
+without its migration record, or the pending list is unexpected, stop and
+reconcile the schema/history before applying anything. Never use `migrate:fresh`,
+rollback, or delete migration records to force deployment.
+
+Only after the pending migration set has been reviewed and the database backup
+verified should migrations be applied during a quiet period. This overlay adds
+`2026_10_21_000001_add_email_delivery_unknown_status.php`. It adds a campaign
+counter and changes existing `failed` recipient statuses to `delivery_unknown`
+without resending any email. If this is the only expected pending migration,
+run it specifically:
+
+    php artisan migrate --path=database/migrations/2026_10_21_000001_add_email_delivery_unknown_status.php --force
+
+If any other migrations are pending, stop and reconcile them separately before
+continuing; do not apply an unreviewed historical migration set.
+
+If migration reports a failure, stop and preserve the complete error output;
+do not delete migration records or tables to force it through.
+
+Then clear Laravel's caches and run the read-only deployment preflight:
+
+    php artisan optimize:clear
+    php artisan blockrium:preflight
+
+Preflight must pass route/controller checks, Blade named-route checks, required
+schema checks, and email logo file checks. It also verifies the email campaign
+composer route at `/admin/email-campaigns/create`. It does not prove live Didit, Google
+Play, Firebase, SMTP, DNS, or device behavior. Test those separately before
+resuming campaigns or changing user payment/KYC state.
+
+Rollback
+If the application fails after extraction, restore the matching full public_html
+and database backups together. Do not restore only routes or controllers from a
+different release because their views, services, and schema may not match.

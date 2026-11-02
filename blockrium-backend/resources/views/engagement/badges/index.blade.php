@@ -1,0 +1,9 @@
+@include('admin.includes.header')
+@include('admin.includes.sidebar')
+<div class="content-wrapper admin-content">
+  <section class="content-header admin-page-header"><div class="container-fluid"><div class="row align-items-center"><div class="col-md-8"><h1>Badges</h1><p>Badge catalogue and availability.</p></div><div class="col-md-4"><div class="admin-header-actions"><a class="btn btn-admin-primary" href="{{ route('admin.engagement.badges.create') }}"><i class="fa-solid fa-plus"></i>Add Badge</a></div></div></div></div></section>
+  <section class="content"><div class="container-fluid">@include('flash/flash-message')<div class="admin-panel"><div class="table-responsive"><table class="table admin-table"><thead><tr><th>Badge</th><th>Category</th><th>Status</th><th>Order</th><th>Earned</th><th>Actions</th></tr></thead><tbody>
+    @forelse($badges as $badge)<tr><td><strong>{{ $badge->name }}</strong><br><small>{{ $badge->key }}</small></td><td>{{ $badge->category ?: '—' }}</td><td><span class="admin-badge {{ $badge->is_active ? 'admin-badge-success' : 'admin-badge-muted' }}">{{ $badge->is_active ? 'Active' : 'Inactive' }}</span></td><td>{{ $badge->sort_order }}</td><td>{{ number_format($badge->earned_count) }}</td><td><div class="d-flex flex-wrap"><a class="btn btn-sm btn-admin-muted mr-2" href="{{ route('admin.engagement.badges.edit', $badge->id) }}"><i class="fa-solid fa-pen"></i>Edit</a><form method="POST" action="{{ route('admin.engagement.badges.toggle', $badge->id) }}">@csrf<button class="btn btn-sm {{ $badge->is_active ? 'btn-warning' : 'btn-success' }}" type="submit">{{ $badge->is_active ? 'Disable' : 'Enable' }}</button></form></div></td></tr>@empty<tr><td colspan="6" class="admin-empty">No badges configured.</td></tr>@endforelse
+  </tbody></table></div><div class="mt-3">{{ $badges->links('vendor.pagination.custom') }}</div></div></div></section>
+</div>
+@include('admin.includes.footer')

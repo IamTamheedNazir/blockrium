@@ -1,0 +1,11 @@
+BLOCKRIUM MOBILE SOURCE PATCH — PAYMENT SUPPORT / KYC RETRY
+Release date: 2026-10-26
+
+Files in this patch:
+- source/pages/VerifiedMember.tsx
+- source/services/verificationService.ts
+- source/types/verification.ts
+
+This source patch adds the Google Play GPA order ID and optional Play account email to the signed-in user's support request, displays the two-way support message thread, and lets the user add order details or reply to an open case. The app reads the messages from the existing authenticated verification status response and sends replies through the new authenticated API endpoint.
+
+Apply these files to the React Native source tree, then rebuild the Android app using the project's normal signing and release process. This patch is source only; it is not an APK or AAB and does not contain signing credentials.

@@ -1,26 +1,34 @@
-# Blockrium PWA deployment
+# Blockrium source monorepo
 
-This standalone frontend is intended for `mine.blockrium.com`. It does not replace or modify the React Native app or the existing `blockrium.com`, `wallet.blockrium.com`, or `shield.blockrium.com` sites.
+This private repository contains the Blockrium client and backend source:
 
-## Local development
+- **PWA**: this repository root (`src/`, `public/`). Configure `VITE_API_PREFIX` at build time; it defaults to `https://maticlegend.com/api/`.
+- **Android React Native app**: `android-react-native/`.
+- **Laravel API and admin backend**: `blockrium-backend/`.
 
-```powershell
-cd web-pwa
-npm install
-npm run dev
+## iOS web app scope
+
+The PWA is intended for onboarding iOS users and using features supported by the existing Blockrium API: account registration/sign-in/password recovery, mining sessions, server-backed rewards and tasks, campaigns, promo codes, referrals, squads, learning, profile, notifications, and support issue reports.
+
+Google Play Billing, native Appodeal ads, on-chain Web3 wallet features, KYC/AML initiation, and Verified Member payments are intentionally unavailable in this PWA. The in-app Blockrium balance is read-only here; BRC transfers remain gated to the Android verified-member flow.
+
+## Build the PWA
+
+```sh
+npm ci
+npm run build
 ```
 
-The Vite development server proxies `/api/*` to `https://maticlegend.com/api/*`.
+Deploy the generated `dist/` files to the PWA host after configuring the Laravel API's CORS allowlist to include `https://mine.blockrium.com`. The existing API remains on `https://maticlegend.com/api/` until a different API host is configured.
 
-## Production routing
+## Backend source
 
-Build with `npm run build` and publish the contents of `web-pwa/dist` as the static document root for `mine.blockrium.com`. Configure HTTPS and use `nginx.mine.blockrium.com.conf.example` as the starting point for the isolated virtual host. Its `/api/` route proxies to the existing cPanel API so browser calls are same-origin and do not require broad cross-origin access. The proxy must pass the Authorization header and multipart request bodies.
+`blockrium-backend/` is the Blockrium Laravel source, without `vendor/`, deployment ZIPs, old staging snapshots, runtime logs, or credentials. Install Composer dependencies on the target environment and configure its private `.env` and service credentials there. Do not overwrite production `.env`, user uploads, database, or server-only credentials when deploying.
 
-Do not proxy admin paths or expose server credentials in the frontend. Do not cache API responses in the service worker: authenticated balances, KYC, support, and wallet data must remain live and private.
+## Android source
 
-## Feature coverage and platform adapters
+`android-react-native/` contains the React Native app source and native project files. Release keystores, Firebase service-account files, generated bundles, local Gradle/build output, APK/AAB files, and release logs are intentionally excluded. Provide authorized local signing/Firebase configuration before making a signed Android release.
 
-- Shared backend: login, registration, profile, wallet balance, mining session, tasks, community data, KYC status/start, payment support submission, and promo redemption.
-- Web-only install: web manifest, icons, offline shell, iOS Add to Home Screen guidance, mobile tab navigation.
-- Native Appodeal mediation and Google Play Billing are not browser APIs. They require separately configured web ad inventory and a web-compatible payment flow; the PWA must not claim that a native ad was served or a purchase was confirmed when it was not.
-- Non-custodial Web3 wallet secrets must not be copied into web storage. Use a browser wallet connector or omit key signing until explicitly integrated.
+## Repository hygiene
+
+This repository is private. Keep production credentials and user data out of commits. Use the example environment files and maintain secrets in the hosting/provider secret store.

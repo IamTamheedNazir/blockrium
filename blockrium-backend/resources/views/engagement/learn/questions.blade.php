@@ -1,0 +1,19 @@
+@include('admin.includes.header')
+@include('admin.includes.sidebar')
+<div class="content-wrapper admin-content">
+  <section class="content-header admin-page-header"><div class="container-fluid"><div class="row align-items-center"><div class="col-md-8"><h1>Quiz Questions</h1><p>{{ $module->title }}</p></div><div class="col-md-4"><div class="admin-header-actions"><a class="btn btn-admin-muted" href="{{ route('admin.engagement.learn') }}"><i class="fa-solid fa-arrow-left"></i>Modules</a></div></div></div></div></section>
+  <section class="content"><div class="container-fluid">@include('flash/flash-message')@if($errors->any())<div class="alert alert-danger">{{ $errors->first() }}</div>@endif
+    <div class="admin-panel mb-4"><div class="admin-panel-header"><div><h2>Add Question</h2><p>Correct option is visible only in admin. Mobile APIs hide it.</p></div></div><form method="POST" action="{{ route('admin.engagement.learn.questions.store', $module->id) }}">@csrf
+      <div class="form-group"><label>Question</label><textarea class="form-control" name="question" rows="2" required>{{ old('question') }}</textarea></div>
+      <div class="row"><div class="col-md-6"><div class="form-group"><label>Option A</label><input class="form-control" name="option_a" required value="{{ old('option_a') }}"></div></div><div class="col-md-6"><div class="form-group"><label>Option B</label><input class="form-control" name="option_b" required value="{{ old('option_b') }}"></div></div></div>
+      <div class="row"><div class="col-md-6"><div class="form-group"><label>Option C</label><input class="form-control" name="option_c" required value="{{ old('option_c') }}"></div></div><div class="col-md-6"><div class="form-group"><label>Option D</label><input class="form-control" name="option_d" required value="{{ old('option_d') }}"></div></div></div>
+      <div class="row"><div class="col-md-4"><div class="form-group"><label>Correct Option</label><select class="form-control" name="correct_option" required>@foreach(['A','B','C','D'] as $option)<option value="{{ $option }}" @if(old('correct_option') === $option) selected @endif>{{ $option }}</option>@endforeach</select></div></div><div class="col-md-4"><div class="form-group"><label>Sort Order</label><input type="number" min="0" class="form-control" name="sort_order" required value="{{ old('sort_order', $questions->count() + 1) }}"></div></div></div>
+      <div class="form-group"><label>Explanation</label><textarea class="form-control" name="explanation" rows="2">{{ old('explanation') }}</textarea></div>
+      <button class="btn btn-admin-primary" type="submit"><i class="fa-solid fa-plus"></i>Add Question</button>
+    </form></div>
+    <div class="admin-panel"><div class="table-responsive"><table class="table admin-table"><thead><tr><th>Question</th><th>Correct</th><th>Order</th><th>Actions</th></tr></thead><tbody>
+      @forelse($questions as $question)<tr><td><strong>{{ $question->question }}</strong><br><small>{{ implode(' | ', json_decode((string) $question->options, true) ?: []) }}</small></td><td>{{ $question->correct_option }}</td><td>{{ $question->sort_order }}</td><td><div class="d-flex flex-wrap"><a class="btn btn-sm btn-admin-muted mr-2" href="{{ route('admin.engagement.learn.questions.edit', [$module->id, $question->id]) }}"><i class="fa-solid fa-pen"></i>Edit</a><form method="POST" action="{{ route('admin.engagement.learn.questions.delete', [$module->id, $question->id]) }}" onsubmit="return confirm('Delete this question?')">@csrf @method('DELETE')<button class="btn btn-sm btn-danger" type="submit">Delete</button></form></div></td></tr>@empty<tr><td colspan="4" class="admin-empty">No quiz questions yet. Add three questions before publishing this lesson.</td></tr>@endforelse
+    </tbody></table></div></div>
+  </div></section>
+</div>
+@include('admin.includes.footer')

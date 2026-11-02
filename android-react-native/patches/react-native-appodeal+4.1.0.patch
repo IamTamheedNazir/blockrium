@@ -1,0 +1,28 @@
+diff --git a/node_modules/react-native-appodeal/android/src/main/java/com/appodeal/rnappodeal/RCTAppodealBannerView.kt b/node_modules/react-native-appodeal/android/src/main/java/com/appodeal/rnappodeal/RCTAppodealBannerView.kt
+index 01d00d4..fc79ac0 100644
+--- a/node_modules/react-native-appodeal/android/src/main/java/com/appodeal/rnappodeal/RCTAppodealBannerView.kt
++++ b/node_modules/react-native-appodeal/android/src/main/java/com/appodeal/rnappodeal/RCTAppodealBannerView.kt
+@@ -71,7 +71,9 @@ class RCTAppodealBannerView(context: Context) : ReactViewGroup(context), RNAppod
+             bannerView.visibility = VISIBLE
+             bannerView.descendantFocusability = FOCUS_BLOCK_DESCENDANTS
+ 
++            showRunnable?.let { uiHandler.removeCallbacks(it) }
+             removeAllViews()
++            (bannerView.parent as? ViewGroup)?.removeView(bannerView)
+             this.visibility = VISIBLE
+             addView(bannerView)
+             bannerView.bringToFront()
+@@ -89,9 +91,12 @@ class RCTAppodealBannerView(context: Context) : ReactViewGroup(context), RNAppod
+     }
+ 
+     fun hideBannerView(bannerView: BannerView) {
++        showRunnable?.let {
++            uiHandler.removeCallbacks(it)
++            showRunnable = null
++        }
+         removeAllViews()
+         (bannerView.parent as? ViewGroup)?.removeView(bannerView)
+-        showRunnable?.let { uiHandler.removeCallbacks(it) }
+     }
+ 
+     private fun cacheAdIfNeeded() {
