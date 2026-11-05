@@ -28,7 +28,7 @@ class CreateGooglePlayPurchaseTables extends Migration
                 $table->string('store_region', 2)->nullable();
                 $table->timestamp('purchased_at')->nullable();
                 $table->timestamp('expires_at')->nullable();
-                $table->string('acknowledgement_state', 32)->nullable();
+                $table->string('acknowledgement_state', 64)->nullable();
                 $table->unsignedBigInteger('verification_payment_id')->nullable();
                 $table->unsignedBigInteger('user_boost_id')->nullable();
                 $table->timestamp('last_verified_at')->nullable();

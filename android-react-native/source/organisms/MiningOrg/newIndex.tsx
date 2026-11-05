@@ -322,6 +322,25 @@ const MiningOrg = () => {
     isLoading: isWalletLoading,
     refetch: refetchWallet,
   } = callQuery('auth/wallet', {requestTimeoutMs: 8000, retry: 0});
+  const {data: verificationData} = callQuery('auth/verification/status', {
+    requestTimeoutMs: 8000,
+    retry: 0,
+    staleTime: 30000,
+  });
+  const verificationStatus = verificationData?.data?.data ?? verificationData?.data ?? {};
+  const kycStatus = String(verificationStatus.kyc_status ?? 'not_started').toLowerCase();
+  const kycStatusLabel = kycStatus === 'approved'
+    ? 'KYC verified'
+    : ['started', 'submitted', 'in_review'].includes(kycStatus)
+      ? 'KYC in progress'
+      : kycStatus === 'rejected'
+        ? 'KYC retry available'
+        : 'Identity verification';
+  const membershipStatusLabel = verificationStatus.is_verified
+    ? 'Blockrium Verified'
+    : kycStatus === 'approved'
+      ? 'Membership optional'
+      : 'Membership after KYC';
   const {
     data: boostData,
     isLoading: isBoostLoading,
@@ -1210,6 +1229,19 @@ const MiningOrg = () => {
         onSettingsPress={() => navigate('AppSettings')}
       />
 
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={`${kycStatusLabel}. ${membershipStatusLabel}. Open verification and membership.`}
+        onPress={() => navigate('VerifiedMember')}
+        style={styles.verificationStatusRow}>
+        <Ionicons name={verificationStatus.kyc_status === 'approved' ? 'shield-checkmark' : 'shield-outline'} size={17} color={theme.colors.primary} />
+        <Text style={styles.verificationStatusText}>{kycStatusLabel}</Text>
+        <View style={styles.verificationStatusDivider} />
+        <Ionicons name={verificationStatus.is_verified ? 'checkmark-circle' : 'ribbon-outline'} size={16} color={verificationStatus.is_verified ? theme.colors.accent : theme.colors.textSoft} />
+        <Text style={[styles.verificationStatusText, verificationStatus.is_verified && styles.membershipActiveText]}>{membershipStatusLabel}</Text>
+        <Ionicons name="chevron-forward" size={15} color={theme.colors.textSoft} />
+      </Pressable>
+
       <CardEntrance>
         <GlassCard style={styles.loopCard}>
           <View style={styles.loopHeader}>
@@ -1833,6 +1865,32 @@ const styles = StyleSheet.create({
     paddingTop: 6,
     paddingBottom: 126,
   },
+  verificationStatusRow: {
+    minHeight: 42,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 7,
+    paddingHorizontal: 11,
+    marginBottom: 10,
+    borderRadius: 13,
+    borderWidth: 1,
+    borderColor: theme.colors.border,
+    backgroundColor: 'rgba(14, 21, 31, 0.64)',
+  },
+  verificationStatusText: {
+    color: theme.colors.textMuted,
+    fontSize: 10,
+    fontFamily: theme.typography.bodyBold,
+  },
+  verificationStatusDivider: {
+    width: 1,
+    height: 17,
+    marginHorizontal: 2,
+    backgroundColor: theme.colors.borderStrong,
+  },
+  membershipActiveText: {
+    color: theme.colors.accent,
+  },
   headerRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -1845,8 +1903,8 @@ const styles = StyleSheet.create({
   },
   screenTitle: {
     color: theme.colors.text,
-    fontSize: 34,
-    lineHeight: 36,
+    fontSize: 27,
+    lineHeight: 31,
     fontFamily: theme.typography.display,
   },
   screenSubtitle: {
@@ -1892,8 +1950,8 @@ const styles = StyleSheet.create({
   },
   loopTitle: {
     color: theme.colors.text,
-    fontSize: 21,
-    lineHeight: 25,
+    fontSize: 18,
+    lineHeight: 23,
     fontFamily: theme.typography.heading,
   },
   loopSubtitle: {
@@ -1924,13 +1982,13 @@ const styles = StyleSheet.create({
   loopItemGrid: {
     flexDirection: 'row',
     gap: 8,
-    marginTop: 14,
+    marginTop: 11,
   },
   loopItem: {
     flex: 1,
-    minHeight: 92,
-    borderRadius: theme.radii.lg,
-    padding: 9,
+    minHeight: 78,
+    borderRadius: theme.radii.md,
+    padding: 8,
     justifyContent: 'space-between',
     backgroundColor: 'rgba(14, 21, 31, 0.76)',
     borderWidth: 1,
@@ -2038,8 +2096,8 @@ const styles = StyleSheet.create({
   heroBalanceValue: {
     marginTop: 8,
     color: theme.colors.text,
-    fontSize: 31,
-    lineHeight: 35,
+    fontSize: 27,
+    lineHeight: 32,
     fontFamily: theme.typography.display,
   },
   heroBalanceUnit: {
@@ -2056,22 +2114,22 @@ const styles = StyleSheet.create({
   },
   timerShell: {
     alignItems: 'center',
-    marginTop: 16,
-    marginBottom: 14,
+    marginTop: 12,
+    marginBottom: 10,
     justifyContent: 'center',
   },
   timerPulse: {
     position: 'absolute',
-    width: 188,
-    height: 188,
-    borderRadius: 94,
+    width: 164,
+    height: 164,
+    borderRadius: 82,
     backgroundColor: theme.colors.primary,
   },
   timerRing: {
-    width: 170,
-    height: 170,
-    borderRadius: 85,
-    padding: 12,
+    width: 148,
+    height: 148,
+    borderRadius: 74,
+    padding: 10,
     backgroundColor: 'rgba(0, 214, 176, 0.11)',
     borderWidth: 1,
     borderColor: 'rgba(0, 214, 176, 0.25)',

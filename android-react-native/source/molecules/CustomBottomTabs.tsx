@@ -92,8 +92,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   gradient: {
-    marginHorizontal: 12,
-    borderRadius: 24,
+    marginHorizontal: 16,
+    borderRadius: 20,
     borderWidth: 1,
     borderColor: 'rgba(151, 166, 195, 0.16)',
     overflow: 'hidden',
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 5,
-    paddingVertical: 5,
+    paddingHorizontal: 4,
+    paddingVertical: 4,
   },
 });

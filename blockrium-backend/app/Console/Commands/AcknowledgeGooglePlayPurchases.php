@@ -21,6 +21,16 @@ class AcknowledgeGooglePlayPurchases extends Command
             $stats['pending']
         ));
 
+        foreach ($stats['results'] ?? [] as $result) {
+            $this->line(sprintf(
+                'Purchase #%d: %s%s%s',
+                $result['purchase_id'],
+                $result['outcome'] ?? 'unknown',
+                isset($result['http_status']) ? ' (HTTP ' . $result['http_status'] . ')' : '',
+                isset($result['exception']) ? ' — ' . $result['exception'] . (isset($result['source']) ? ' at ' . $result['source'] : '') : ''
+            ));
+        }
+
         return self::SUCCESS;
     }
 }

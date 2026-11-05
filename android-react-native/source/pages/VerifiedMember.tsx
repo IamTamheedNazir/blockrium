@@ -57,139 +57,13 @@ const normalizeStatus = (payload: any): VerificationStatus => ({
 });
 
 const kycStatusCopy = (status: VerificationStatus) => {
-  if (status.access_suspended) {
-    return {
-      label: 'Access suspended',
-      title: 'Verified-member access is suspended',
-      message: 'Your KYC approval and recorded payment remain on your account. Member-only features are temporarily unavailable; contact Blockrium Support if you need help.',
-      icon: 'alert-circle-outline',
-      tone: theme.colors.accentWarm,
-    };
-  }
-
-  if (status.is_verified) {
-    return {
-      label: 'Verified',
-      title: 'Your Blockrium identity is verified',
-      message: 'Your verified badge and member-only BRC features are active.',
-      icon: 'shield-checkmark',
-      tone: theme.colors.primary,
-    };
-  }
-
-  if (['refunded', 'revoked'].includes(status.payment_status)) {
-    return {
-      label: status.payment_status === 'refunded' ? 'Payment refunded' : 'Membership revoked',
-      title: status.payment_status === 'refunded' ? 'Verified membership payment was refunded' : 'Verified membership access was revoked',
-      message: 'Member-only transfers and benefits are locked. Your payment history remains available. Contact support if you believe this status is incorrect.',
-      icon: 'lock-closed-outline',
-      tone: theme.colors.danger,
-    };
-  }
-
-  if (status.kyc_status === 'approved' && status.payment_status !== 'paid') {
-    if (status.next_action === 'payment_processing') {
-      return {
-        label: 'Payment processing',
-        title: 'We are confirming your payment',
-        message: 'Your payment was started successfully. We will activate member access after Google Play confirms it.',
-        icon: 'time-outline',
-        tone: theme.colors.accentWarm,
-      };
-    }
-
-    if (status.next_action === 'payment_support') {
-      return {
-        label: 'Payment support',
-        title: 'Your payment needs a quick review',
-      message: 'The payment confirmation is taking longer than expected. You can report the issue below and our team will reconcile it.',
-        icon: 'help-circle-outline',
-        tone: theme.colors.accentWarm,
-      };
-    }
-
-    return {
-      label: 'Payment pending',
-      title: 'KYC approved · membership payment pending',
-      message: 'Your identity verification is complete and your KYC Verified badge is active. The one-time payment is for Blockrium Verified membership, not KYC; it unlocks BRC transfers and other member benefits.',
-      icon: 'card-outline',
-      tone: theme.colors.accentWarm,
-    };
-  }
-
-  if (status.payment_status === 'paid' && status.kyc_status === 'not_started' && !status.is_verified) {
-    return {
-      label: 'Payment received · KYC needed',
-      title: 'Your membership payment is recorded',
-      message: 'Start identity verification to activate Blockrium Verified. You do not need to pay again for this recorded payment.',
-      icon: 'shield-checkmark-outline',
-      tone: theme.colors.accentWarm,
-    };
-  }
-
-  if (status.next_action === 'kyc_review_pending') {
-    return {
-      label: 'KYC review pending',
-      title: 'Membership payment received · KYC review in progress',
-      message: 'Your Blockrium Verified membership payment is recorded. Member benefits activate after your separate KYC review is approved.',
-      icon: 'time-outline',
-      tone: theme.colors.accentWarm,
-    };
-  }
-
-  if (status.kyc_status === 'in_review') {
-    return {
-      label: 'Under review',
-      title: 'Didit is reviewing your verification',
-      message: 'Keep this screen available. We will update your status when Didit sends the result.',
-      icon: 'time-outline',
-      tone: theme.colors.accentWarm,
-    };
-  }
-
-  if (status.kyc_status === 'rejected') {
-    return {
-      label: 'Action needed',
-      title: 'Verification was not approved',
-      message: status.kyc_rejection_reason
-        ? `${status.kyc_rejection_reason} You can correct your details and retry KYC. Any confirmed membership payment remains recorded.`
-        : 'You can correct your details and retry KYC. Any confirmed membership payment remains recorded.',
-      icon: 'alert-circle-outline',
-      tone: theme.colors.danger,
-    };
-  }
-
-  if (status.kyc_status === 'country_limit') {
-    return {
-      label: 'Pilot capacity reached',
-      title: 'Verification is temporarily full',
-      message: 'The initial country allocation has been reached. Please check again later.',
-      icon: 'hourglass-outline',
-      tone: theme.colors.accentWarm,
-    };
-  }
-
-  if (['started', 'submitted'].includes(status.kyc_status)) {
-    return {
-      label: 'In progress',
-      title: 'Continue your identity verification',
-      message: 'Complete the hosted Didit flow so the verification result can be reviewed.',
-      icon: 'finger-print-outline',
-      tone: theme.colors.primary,
-    };
-  }
-
-  return {
-    label: 'Not started',
-    title: 'Unlock verified Blockrium membership',
-    message: status.kyc_rejection_reason
-      ? `Your previous KYC attempt was not approved: ${status.kyc_rejection_reason} Start a new verification session when you are ready. Any confirmed membership payment remains recorded.`
-      : 'Complete identity review first. If approved, your KYC Verified badge appears. A separate one-time Blockrium Verified membership payment unlocks BRC transfers and member benefits.',
-    icon: 'shield-checkmark-outline',
-    tone: theme.colors.primary,
-  };
+  if (status.kyc_status === 'approved') return {label: 'KYC verified', title: 'Your identity check is approved', message: 'Your KYC Verified badge is active. Blockrium Verified membership is a separate optional purchase.', icon: 'shield-checkmark', tone: theme.colors.primary};
+  if (status.kyc_status === 'in_review') return {label: 'Under review', title: 'Your identity check is being reviewed', message: 'We will update this status when the verification provider returns its result.', icon: 'time-outline', tone: theme.colors.accentWarm};
+  if (status.kyc_status === 'rejected') return {label: 'Action needed', title: 'Identity check needs another attempt', message: status.kyc_rejection_reason ? `${status.kyc_rejection_reason} Correct the issue and retry your identity check.` : 'Correct the issue shown by the verification provider and retry your identity check.', icon: 'alert-circle-outline', tone: theme.colors.danger};
+  if (status.kyc_status === 'country_limit') return {label: 'Waiting for capacity', title: 'Identity verification is temporarily unavailable', message: 'The current country allocation is full. Please check again later.', icon: 'hourglass-outline', tone: theme.colors.accentWarm};
+  if (['started', 'submitted'].includes(status.kyc_status)) return {label: 'In progress', title: 'Continue your identity check', message: 'Finish the secure identity verification flow. Membership payment is handled separately.', icon: 'finger-print-outline', tone: theme.colors.primary};
+  return {label: 'Not started', title: 'Verify your identity', message: 'Complete the identity check to receive your KYC Verified badge. This step does not require a membership purchase.', icon: 'shield-checkmark-outline', tone: theme.colors.primary};
 };
-
 const VerifiedMember = () => {
   const navigation = useNavigation<any>();
   const isFocused = useIsFocused();
@@ -391,10 +265,7 @@ const VerifiedMember = () => {
         return;
       }
 
-      const updatedStatus = await waitForKycResult();
-      if (updatedStatus?.next_action === 'payment_required') {
-        await openPaymentCheckout();
-      }
+      await waitForKycResult();
     } catch (error: any) {
       showAlert(error?.message || 'Unable to open Didit verification.', 'ERROR');
     } finally {
@@ -539,7 +410,7 @@ const VerifiedMember = () => {
   if (!status) {
     return (
       <AppScreen contentContainerStyle={styles.contentContainer}>
-        <ScreenHeader title="Verified Member" showBack onBackPress={() => navigation.goBack()} />
+        <ScreenHeader title="Verification & membership" showBack onBackPress={() => navigation.goBack()} />
         <ScreenState
           icon="shield-outline"
           title="Verification status unavailable"
@@ -580,13 +451,14 @@ const VerifiedMember = () => {
       }}
       contentContainerStyle={styles.contentContainer}>
       <ScreenHeader
-        title="Verified Member"
-        subtitle="Identity, payment, and member-only benefits"
+        title="Verification & membership"
+        subtitle="Your identity status and paid membership are separate"
         showBack
         onBackPress={() => navigation.goBack()}
       />
 
       <GlassCard style={[styles.heroCard, {borderColor: alpha(copy.tone, 0.42)}]}>
+        <View style={styles.cardEyebrow}><Ionicons name="finger-print-outline" size={15} color={copy.tone} /><Text style={[styles.cardEyebrowText, {color: copy.tone}]}>IDENTITY VERIFICATION</Text></View>
         <View style={[styles.heroIcon, {backgroundColor: alpha(copy.tone, 0.16)}]}>
           <Ionicons name={copy.icon as any} size={29} color={copy.tone} />
         </View>
@@ -596,9 +468,14 @@ const VerifiedMember = () => {
         {status.kyc_country ? <Text style={styles.countryText}>Verified country: {status.kyc_country}</Text> : null}
         {canStart ? <PrimaryButton label={status.kyc_status === 'rejected' ? 'Retry KYC' : status.kyc_status === 'not_started' ? 'Start identity verification' : 'Continue verification'} icon={status.kyc_status === 'rejected' ? 'refresh' : 'shield-check'} onPress={status.kyc_status === 'rejected' ? handleRestartVerification : handleStartVerification} loading={isStarting} style={styles.heroButton} /> : null}
         {status.kyc_retry_available && status.kyc_retry_reason === 'stale_session' ? <SecondaryButton label="Restart verification" icon="refresh" onPress={handleRestartVerification} loading={isStarting} style={styles.heroButton} /> : null}
-        {paymentPending ? Platform.OS === 'android' ? <PrimaryButton label="Complete membership payment" icon="credit-card-outline" onPress={handlePayment} loading={isPaying} style={styles.heroButton} /> : <Text style={styles.heroMessage}>Blockrium Verified membership activation is available in the Android app.</Text> : null}
-        {paymentProcessing ? <SecondaryButton label="Refresh payment status" icon="refresh" onPress={async () => { await refreshStatus(); }} loading={isFetching} style={styles.heroButton} /> : null}
         {status.kyc_status === 'in_review' ? <SecondaryButton label="Refresh result" icon="refresh" onPress={async () => { await refreshStatus(); }} loading={isFetching} style={styles.heroButton} /> : null}
+      </GlassCard>
+
+      <GlassCard style={[styles.membershipCard, {borderColor: alpha(status.is_verified ? theme.colors.primary : theme.colors.accentWarm, 0.35)}]}>
+        <View style={styles.cardEyebrow}><Ionicons name="ribbon-outline" size={16} color={status.is_verified ? theme.colors.primary : theme.colors.accentWarm} /><Text style={[styles.cardEyebrowText, {color: status.is_verified ? theme.colors.primary : theme.colors.accentWarm}]}>BLOCKRIUM VERIFIED MEMBERSHIP</Text></View>
+        <View style={styles.membershipHeading}><View style={styles.membershipIcon}><Ionicons name={status.is_verified ? 'checkmark-circle' : 'card-outline'} size={21} color={status.is_verified ? theme.colors.primary : theme.colors.accentWarm} /></View><View style={styles.membershipCopy}><Text style={styles.membershipTitle}>{status.is_verified ? 'Membership active' : status.access_suspended ? 'Membership access suspended' : paymentProcessing ? 'Payment processing' : status.payment_status === 'refunded' ? 'Payment refunded' : status.payment_status === 'revoked' ? 'Membership revoked' : status.payment_status === 'paid' ? 'Payment recorded · identity review pending' : isApproved ? 'Optional one-time membership' : 'Available after identity approval'}</Text><Text style={styles.membershipMessage}>{status.is_verified ? 'Your Blockrium Verified badge and member benefits are active.' : status.access_suspended ? 'Member benefits are currently locked. Your KYC result remains separate from membership access.' : paymentProcessing ? 'Google Play is confirming the order. Benefits stay locked until the server confirms payment.' : status.payment_status === 'refunded' || status.payment_status === 'revoked' ? 'Member benefits are locked. Your KYC approval and payment history remain recorded.' : status.payment_status === 'paid' ? 'Your payment is recorded. Complete identity review to activate membership. Do not pay again.' : isApproved ? 'Your identity is verified. Membership has not been activated. The one-time payment is for membership, not KYC.' : 'This paid membership is separate from the KYC identity check.'}</Text></View></View>
+        {paymentPending && isApproved && !status.access_suspended ? Platform.OS === 'android' ? <PrimaryButton label={status.payment_status === 'refunded' || status.payment_status === 'revoked' ? 'Activate membership again' : 'Activate Blockrium Verified'} icon="credit-card-outline" onPress={handlePayment} loading={isPaying} style={styles.heroButton} /> : <Text style={styles.membershipMessage}>Membership activation is available in the Android app.</Text> : null}
+        {paymentProcessing ? <SecondaryButton label="Refresh payment status" icon="refresh" onPress={async () => { await refreshStatus(); }} loading={isFetching} style={styles.heroButton} /> : null}
       </GlassCard>
 
       {paymentSupportAvailable && !supportCaseOpen ? <GlassCard style={styles.supportCard}>
@@ -673,13 +550,21 @@ const VerifiedMember = () => {
 
 const styles = StyleSheet.create({
   contentContainer: {paddingTop: 6, paddingBottom: 132},
-  heroCard: {alignItems: 'center', paddingVertical: 24},
-  heroIcon: {width: 68, height: 68, borderRadius: 24, alignItems: 'center', justifyContent: 'center', marginBottom: 14},
+  heroCard: {alignItems: 'center', paddingVertical: 18},
+  cardEyebrow: {alignSelf: 'stretch', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 7, marginBottom: 12},
+  cardEyebrowText: {fontSize: 10, letterSpacing: 1, fontFamily: theme.typography.bodyBold},
+  membershipCard: {paddingVertical: 17},
+  membershipHeading: {flexDirection: 'row', alignItems: 'flex-start', gap: 12},
+  membershipIcon: {width: 42, height: 42, borderRadius: 14, alignItems: 'center', justifyContent: 'center', backgroundColor: alpha(theme.colors.surfaceStrong, 0.8), borderWidth: 1, borderColor: theme.colors.border},
+  membershipCopy: {flex: 1},
+  membershipTitle: {color: theme.colors.text, fontSize: 16, lineHeight: 21, fontFamily: theme.typography.heading},
+  membershipMessage: {marginTop: 5, color: theme.colors.textMuted, fontSize: 13, lineHeight: 19, fontFamily: theme.typography.body},
+  heroIcon: {width: 52, height: 52, borderRadius: 18, alignItems: 'center', justifyContent: 'center', marginBottom: 10},
   statusPill: {flexDirection: 'row', alignItems: 'center', gap: 7, paddingHorizontal: 12, paddingVertical: 7, borderRadius: theme.radii.pill, backgroundColor: alpha(theme.colors.surfaceStrong, 0.7), borderWidth: 1, borderColor: theme.colors.border},
   statusDot: {width: 7, height: 7, borderRadius: 4},
   statusPillText: {fontSize: 12, fontFamily: theme.typography.bodyBold},
-  heroTitle: {marginTop: 16, color: theme.colors.text, fontSize: 24, lineHeight: 29, textAlign: 'center', fontFamily: theme.typography.display},
-  heroMessage: {marginTop: 8, color: theme.colors.textMuted, fontSize: 14, lineHeight: 20, textAlign: 'center', fontFamily: theme.typography.body},
+  heroTitle: {marginTop: 12, color: theme.colors.text, fontSize: 21, lineHeight: 26, textAlign: 'center', fontFamily: theme.typography.display},
+  heroMessage: {marginTop: 7, color: theme.colors.textMuted, fontSize: 13, lineHeight: 19, textAlign: 'center', fontFamily: theme.typography.body},
   countryText: {marginTop: 10, color: theme.colors.textSoft, fontSize: 12, fontFamily: theme.typography.bodyMedium},
   heroButton: {alignSelf: 'stretch', marginTop: 18},
   timelineCard: {paddingVertical: 18},

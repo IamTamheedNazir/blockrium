@@ -13,6 +13,7 @@ import FastImage from 'react-native-fast-image';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useQueryClient} from 'react-query';
+import {useFocusEffect} from '@react-navigation/native';
 import {images} from '../../../assets/images';
 import {callQuery} from '../../hooks';
 import {useKycPaymentReminder} from '../../hooks/useKycPaymentReminder';
@@ -466,8 +467,8 @@ const HomeOrg = () => {
       },
       {
         key: 'verified-member',
-        title: 'Verified Member',
-        subtitle: 'Complete KYC and unlock BRC member benefits.',
+        title: 'Verification & membership',
+        subtitle: 'Check identity status or manage optional membership.',
         icon: 'shield-checkmark-outline',
         onPress: () => navigate('VerifiedMember'),
       },
@@ -630,6 +631,12 @@ const HomeOrg = () => {
   const firstName = user?.name?.split(' ')?.[0] ?? 'Miner';
   const verification: VerificationStatus =
     verificationData?.data?.data ?? verificationData?.data ?? {};
+  useFocusEffect(
+    useCallback(() => {
+      refetchVerification?.();
+      return undefined;
+    }, [refetchVerification]),
+  );
   const waitlist: VerificationWaitlist | undefined = verification.waitlist;
   const hasKycPaymentPending = hasUnpaidApprovedVerification(verification);
   const refreshKycStatusForReminder = useCallback(async () => {
@@ -650,6 +657,8 @@ const HomeOrg = () => {
     refreshKycStatusForReminder,
   );
   const waitlistStatus = waitlist?.status ?? null;
+  const kycStatus = String(verification.kyc_status ?? 'not_started').toLowerCase();
+  const kycInviteStillRelevant = ['not_started', 'invited', 'waiting', ''].includes(kycStatus);
   const hasJoinedKycWaitlist = [
     'waiting',
     'invited',
@@ -657,7 +666,10 @@ const HomeOrg = () => {
     'converted',
   ].includes(waitlistStatus ?? '');
   const shouldShowKycWaitlist = Boolean(
-    waitlist?.enabled && !verification.is_verified,
+    waitlist?.enabled &&
+      !verification.is_verified &&
+      kycInviteStillRelevant &&
+      waitlistStatus !== 'converted',
   );
   const miningBoostPercent = Number(
     verification.benefits?.mining_boost_percent ?? 10,
@@ -1142,6 +1154,18 @@ const HomeOrg = () => {
                   : 'Wallet synced'}
               </Text>
             </View>
+            {verification.kyc_status === 'approved' ? (
+              <View style={styles.heroStatusChip}>
+                <Ionicons name="shield-checkmark" size={14} color={theme.colors.primary} />
+                <Text style={styles.heroStatusText}>KYC verified</Text>
+              </View>
+            ) : null}
+            {verification.is_verified ? (
+              <View style={[styles.heroStatusChip, styles.memberStatusChip]}>
+                <Ionicons name="checkmark-circle" size={14} color={theme.colors.accent} />
+                <Text style={styles.heroStatusText}>Blockrium Verified</Text>
+              </View>
+            ) : null}
           </View>
           <View style={styles.balanceStrip}>
             {[
@@ -1274,94 +1298,28 @@ const HomeOrg = () => {
       {shouldShowKycWaitlist ? (
         <CardEntrance delay={12}>
           <GlassCard style={styles.kycWaitlistCard}>
-            <View style={styles.kycWaitlistHeader}>
-              <View style={styles.kycWaitlistIcon}>
-                <Ionicons
-                  name="shield-checkmark-outline"
-                  size={22}
-                  color={theme.colors.primary}
-                />
+            <View style={styles.kycCompactRow}>
+              <View style={styles.kycCompactIcon}>
+                <Ionicons name="shield-checkmark-outline" size={18} color={theme.colors.primary} />
               </View>
-              <View style={styles.kycWaitlistCopy}>
-                <View style={styles.kycWaitlistEyebrowRow}>
-                  <Text style={styles.kycWaitlistEyebrow}>
-                    KYC EARLY ACCESS
-                  </Text>
-                  <View style={styles.kycWaitlistLivePill}>
-                    <View style={styles.kycWaitlistLiveDot} />
-                    <Text style={styles.kycWaitlistLiveText}>Limited</Text>
-                  </View>
-                </View>
-                <Text style={styles.kycWaitlistTitle}>
-                  Be first in your country batch
+              <View style={styles.kycCompactCopy}>
+                <Text style={styles.kycCompactTitle} numberOfLines={1}>
+                  {hasJoinedKycWaitlist ? waitlistStatus === 'invited' ? 'Your KYC invitation is ready' : 'KYC waiting list' : 'KYC early access'}
                 </Text>
-                <Text style={styles.kycWaitlistSubtitle} numberOfLines={2}>
-                  {waitlist?.message ||
-                    'Reserve your place before verification opens in your country.'}
+                <Text style={styles.kycCompactSubtitle} numberOfLines={1}>
+                  {hasJoinedKycWaitlist
+                    ? waitlist?.position ? `Queue position #${waitlist.position}${waitlist.country_name ? ` · ${waitlist.country_name}` : ''}` : waitlistStatus === 'invited' ? 'Start your identity check when you are ready.' : 'Your place is reserved.'
+                    : waitlist?.message || 'Join the country queue for an identity check invitation.'}
                 </Text>
               </View>
-            </View>
-            <View style={styles.kycWaitlistBenefitRow}>
-              <View style={styles.kycWaitlistBenefit}>
-                <Ionicons
-                  name="flash-outline"
-                  size={14}
-                  color={theme.colors.primary}
-                />
-                <Text style={styles.kycWaitlistBenefitText}>
-                  {miningBoostPercent}% mining boost
-                </Text>
-              </View>
-              <View style={styles.kycWaitlistBenefit}>
-                <Ionicons
-                  name="notifications-outline"
-                  size={14}
-                  color={theme.colors.accent}
-                />
-                <Text style={styles.kycWaitlistBenefitText}>
-                  Priority invite
-                </Text>
-              </View>
-              {waitlist?.country_name ? (
-                <View style={styles.kycWaitlistBenefit}>
-                  <Ionicons
-                    name="globe-outline"
-                    size={14}
-                    color={theme.colors.accentWarm}
-                  />
-                  <Text style={styles.kycWaitlistBenefitText} numberOfLines={1}>
-                    {waitlist.country_name}
-                  </Text>
-                </View>
-              ) : null}
-            </View>
-            {hasJoinedKycWaitlist ? (
-              <View style={styles.kycQueueRow}>
-                <View>
-                  <Text style={styles.kycQueueLabel}>YOUR QUEUE POSITION</Text>
-                  <Text style={styles.kycQueueValue}>
-                    {waitlist?.position ? `#${waitlist.position}` : 'Reserved'}
-                  </Text>
-                </View>
-                <Pressable
-                  onPress={openKycWaitlistPrompt}
-                  style={styles.kycQueueAction}>
-                  <Text style={styles.kycQueueActionText}>View status</Text>
-                  <Ionicons
-                    name="arrow-forward"
-                    size={14}
-                    color={theme.colors.primary}
-                  />
-                </Pressable>
-              </View>
-            ) : (
-              <PrimaryButton
-                label="Join the KYC waiting list"
-                icon="arrow-right"
+              <Pressable
+                accessibilityRole="button"
                 onPress={openKycWaitlistPrompt}
-                style={styles.kycWaitlistButton}
-              />
-            )}
+                style={styles.kycCompactAction}>
+                <Text style={styles.kycCompactActionText}>{hasJoinedKycWaitlist ? 'View' : 'Join'}</Text>
+                <Ionicons name="chevron-forward" size={15} color={theme.colors.primary} />
+              </Pressable>
+            </View>
           </GlassCard>
         </CardEntrance>
       ) : null}
@@ -2075,7 +2033,7 @@ const styles = StyleSheet.create({
   },
   brandName: {
     color: theme.colors.text,
-    fontSize: 23,
+    fontSize: 21,
     fontFamily: theme.typography.display,
   },
   brandTag: {
@@ -2145,8 +2103,8 @@ const styles = StyleSheet.create({
   },
   heroTitle: {
     color: theme.colors.text,
-    fontSize: 29,
-    lineHeight: 33,
+    fontSize: 26,
+    lineHeight: 30,
     fontFamily: theme.typography.display,
   },
   heroText: {
@@ -2163,9 +2121,9 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   heroStatusChip: {
-    minHeight: 34,
+    minHeight: 30,
     borderRadius: theme.radii.pill,
-    paddingHorizontal: 12,
+    paddingHorizontal: 10,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
@@ -2186,15 +2144,15 @@ const styles = StyleSheet.create({
   },
   balanceStrip: {
     flexDirection: 'row',
-    gap: 10,
-    marginTop: 16,
-    marginBottom: 14,
+    gap: 8,
+    marginTop: 13,
+    marginBottom: 11,
   },
   balanceCard: {
     flex: 1,
-    minHeight: 94,
-    borderRadius: theme.radii.lg,
-    padding: 10,
+    minHeight: 80,
+    borderRadius: theme.radii.md,
+    padding: 9,
     backgroundColor: 'rgba(14, 21, 31, 0.82)',
     borderWidth: 1,
     borderColor: theme.colors.border,
@@ -2227,11 +2185,11 @@ const styles = StyleSheet.create({
     fontFamily: theme.typography.bodyBold,
   },
   featuredBoost: {
-    minHeight: 82,
-    marginBottom: 12,
-    borderRadius: 20,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
+    minHeight: 72,
+    marginBottom: 10,
+    borderRadius: 16,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
@@ -2244,9 +2202,9 @@ const styles = StyleSheet.create({
     transform: [{scale: 0.99}],
   },
   featuredBoostIcon: {
-    width: 46,
-    height: 46,
-    borderRadius: 16,
+    width: 40,
+    height: 40,
+    borderRadius: 13,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: theme.colors.primary,
@@ -2274,8 +2232,8 @@ const styles = StyleSheet.create({
   },
   quickAction: {
     flex: 1,
-    minHeight: 82,
-    borderRadius: theme.radii.lg,
+    minHeight: 70,
+    borderRadius: theme.radii.md,
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 6,
@@ -2288,12 +2246,12 @@ const styles = StyleSheet.create({
     transform: [{scale: 0.98}],
   },
   quickActionIcon: {
-    width: 34,
-    height: 34,
-    borderRadius: 17,
+    width: 30,
+    height: 30,
+    borderRadius: 12,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 7,
+    marginBottom: 5,
     backgroundColor: 'rgba(0, 214, 176, 0.12)',
     borderWidth: 1,
     borderColor: 'rgba(0, 214, 176, 0.18)',
@@ -2312,134 +2270,53 @@ const styles = StyleSheet.create({
   kycWaitlistCard: {
     borderColor: 'rgba(0, 214, 176, 0.26)',
     backgroundColor: 'rgba(13, 27, 36, 0.96)',
+    paddingVertical: 10,
   },
-  kycWaitlistHeader: {
+  memberStatusChip: {
+    borderColor: 'rgba(47, 124, 255, 0.24)',
+    backgroundColor: 'rgba(47, 124, 255, 0.08)',
+  },
+  kycCompactRow: {
     flexDirection: 'row',
-    alignItems: 'flex-start',
-    gap: 12,
+    alignItems: 'center',
+    gap: 10,
   },
-  kycWaitlistIcon: {
-    width: 46,
-    height: 46,
+  kycCompactIcon: {
+    width: 34,
+    height: 34,
+    borderRadius: 11,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 16,
-    backgroundColor: 'rgba(0, 214, 176, 0.13)',
-    borderWidth: 1,
-    borderColor: 'rgba(0, 214, 176, 0.2)',
+    backgroundColor: 'rgba(0, 214, 176, 0.12)',
   },
-  kycWaitlistCopy: {
+  kycCompactCopy: {
     flex: 1,
     minWidth: 0,
   },
-  kycWaitlistEyebrowRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flexWrap: 'wrap',
-    gap: 8,
-  },
-  kycWaitlistEyebrow: {
-    color: theme.colors.primarySoft,
-    fontSize: 10,
-    letterSpacing: 0.8,
-    fontFamily: theme.typography.bodyBold,
-  },
-  kycWaitlistLivePill: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 5,
-    paddingHorizontal: 7,
-    paddingVertical: 4,
-    borderRadius: theme.radii.pill,
-    backgroundColor: 'rgba(240, 185, 11, 0.12)',
-  },
-  kycWaitlistLiveDot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-    backgroundColor: theme.colors.accentWarm,
-  },
-  kycWaitlistLiveText: {
-    color: theme.colors.accentWarm,
-    fontSize: 9,
-    fontFamily: theme.typography.bodyBold,
-  },
-  kycWaitlistTitle: {
-    marginTop: 5,
+  kycCompactTitle: {
     color: theme.colors.text,
-    fontSize: 19,
-    lineHeight: 23,
-    fontFamily: theme.typography.heading,
+    fontSize: 13,
+    fontFamily: theme.typography.bodyBold,
   },
-  kycWaitlistSubtitle: {
-    marginTop: 4,
+  kycCompactSubtitle: {
+    marginTop: 2,
     color: theme.colors.textMuted,
-    fontSize: 12,
-    lineHeight: 17,
+    fontSize: 10,
+    lineHeight: 14,
     fontFamily: theme.typography.body,
   },
-  kycWaitlistBenefitRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
-    marginTop: 15,
-  },
-  kycWaitlistBenefit: {
+  kycCompactAction: {
+    minHeight: 40,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 5,
-    paddingHorizontal: 9,
-    paddingVertical: 7,
-    borderRadius: theme.radii.pill,
-    backgroundColor: 'rgba(14, 21, 31, 0.76)',
-    borderWidth: 1,
-    borderColor: theme.colors.border,
-  },
-  kycWaitlistBenefitText: {
-    maxWidth: 150,
-    color: theme.colors.textMuted,
-    fontSize: 10,
-    fontFamily: theme.typography.bodyMedium,
-  },
-  kycWaitlistButton: {
-    marginTop: 15,
-  },
-  kycQueueRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: 12,
-    marginTop: 15,
-    padding: 12,
-    borderRadius: theme.radii.lg,
-    backgroundColor: 'rgba(0, 214, 176, 0.08)',
-    borderWidth: 1,
-    borderColor: 'rgba(0, 214, 176, 0.18)',
-  },
-  kycQueueLabel: {
-    color: theme.colors.textSoft,
-    fontSize: 9,
-    letterSpacing: 0.7,
-    fontFamily: theme.typography.bodyBold,
-  },
-  kycQueueValue: {
-    marginTop: 3,
-    color: theme.colors.primarySoft,
-    fontSize: 20,
-    fontFamily: theme.typography.heading,
-  },
-  kycQueueAction: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 5,
+    gap: 2,
     paddingHorizontal: 10,
-    paddingVertical: 9,
-    borderRadius: theme.radii.md,
-    backgroundColor: 'rgba(0, 214, 176, 0.12)',
+    borderRadius: 12,
+    backgroundColor: 'rgba(0, 214, 176, 0.08)',
   },
-  kycQueueActionText: {
+  kycCompactActionText: {
     color: theme.colors.primary,
-    fontSize: 11,
+    fontSize: 12,
     fontFamily: theme.typography.bodyBold,
   },
   todayCard: {
@@ -2457,8 +2334,8 @@ const styles = StyleSheet.create({
   },
   todayTitle: {
     color: theme.colors.text,
-    fontSize: 21,
-    lineHeight: 25,
+    fontSize: 19,
+    lineHeight: 23,
     fontFamily: theme.typography.heading,
   },
   todaySubtitle: {

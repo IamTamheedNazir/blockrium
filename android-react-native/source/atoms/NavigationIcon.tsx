@@ -52,9 +52,9 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    minHeight: 58,
-    paddingVertical: 6,
-    borderRadius: 18,
+    minHeight: 52,
+    paddingVertical: 4,
+    borderRadius: 15,
   },
   tabButtonActive: {
     backgroundColor: 'rgba(0, 214, 176, 0.06)',
@@ -64,9 +64,9 @@ const styles = StyleSheet.create({
     transform: [{scale: 0.97}],
   },
   iconShell: {
-    width: 34,
-    height: 30,
-    borderRadius: 15,
+    width: 30,
+    height: 27,
+    borderRadius: 13,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 3,
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
   },
   label: {
     color: theme.colors.textSoft,
-    fontSize: 10,
+    fontSize: 9,
     fontFamily: theme.typography.bodyMedium,
   },
   labelActive: {

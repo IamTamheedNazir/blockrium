@@ -72,10 +72,10 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
   },
   modal: {
-    width: width * 0.8,
-    padding: 20,
+    width: width * 0.86,
+    padding: 16,
     backgroundColor: theme.colors.surface,
-    borderRadius: 24,
+    borderRadius: 20,
     alignItems: 'center',
     elevation: 5,
     top: height * 0.2,

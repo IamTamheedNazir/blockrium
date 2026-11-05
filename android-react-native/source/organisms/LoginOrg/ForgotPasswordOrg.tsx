@@ -150,18 +150,18 @@ const ForgotPasswordOrg = () => {
 
 const styles = StyleSheet.create({
   contentContainer: {
-    paddingTop: 32,
-    paddingBottom: 48,
+    paddingTop: 22,
+    paddingBottom: 32,
   },
   screenTitle: {
     color: theme.colors.text,
-    fontSize: 34,
-    lineHeight: 36,
+    fontSize: 27,
+    lineHeight: 32,
     fontFamily: theme.typography.display,
   },
   screenSubtitle: {
     marginTop: 4,
-    marginBottom: 18,
+    marginBottom: 14,
     color: theme.colors.textMuted,
     fontSize: 14,
     lineHeight: 19,

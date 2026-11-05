@@ -41,21 +41,25 @@ class GooglePlayBillingService
             ->get();
 
         $acknowledged = 0;
+        $results = [];
         foreach ($purchases as $purchase) {
-            $this->acknowledgePurchase($purchase);
+            $result = $this->acknowledgePurchase($purchase);
             $isAcknowledged = DB::table('google_play_purchases')
                 ->where('id', $purchase->id)
                 ->where('acknowledgement_state', 'ACKNOWLEDGEMENT_STATE_ACKNOWLEDGED')
                 ->exists();
             if ($isAcknowledged) {
                 $acknowledged++;
+                $result['outcome'] = 'acknowledged';
             }
+            $results[] = ['purchase_id' => (int) $purchase->id] + $result;
         }
 
         return [
             'checked' => $purchases->count(),
             'acknowledged' => $acknowledged,
             'pending' => $purchases->count() - $acknowledged,
+            'results' => $results,
         ];
     }
 
@@ -698,17 +702,31 @@ class GooglePlayBillingService
                 'updated_at' => now(),
             ]);
 
-            if ($locked->verification_payment_id) {
+            if (!$reviewRequired && $locked->verification_payment_id) {
                 DB::table('verification_payments')->where('id', $locked->verification_payment_id)->update([
                     'status' => 'refunded',
                     'metadata' => json_encode(array_merge($metadata, ['purchase_status' => 'refunded'])),
                     'updated_at' => now(),
                 ]);
-                DB::table('verified_memberships')->where('user_id', $locked->user_id)->update([
-                    'payment_status' => 'refunded',
-                    'verified_at' => null,
-                    'updated_at' => now(),
-                ]);
+            }
+
+            // Revoke the KYC membership only when this was a full refund and no other
+            // server-recorded KYC purchase still grants an active entitlement.
+            if (!$reviewRequired && $locked->purpose === 'kyc') {
+                $hasAnotherActiveKycPurchase = DB::table('google_play_purchases')
+                    ->where('user_id', $locked->user_id)
+                    ->where('purpose', 'kyc')
+                    ->where('id', '!=', $locked->id)
+                    ->where('status', 'paid')
+                    ->where('entitlement_status', 'active')
+                    ->exists();
+                if (!$hasAnotherActiveKycPurchase) {
+                    DB::table('verified_memberships')->where('user_id', $locked->user_id)->update([
+                        'payment_status' => 'refunded',
+                        'verified_at' => null,
+                        'updated_at' => now(),
+                    ]);
+                }
             }
 
             if ($locked->user_boost_id) {
@@ -830,7 +848,7 @@ class GooglePlayBillingService
         return $normalized;
     }
 
-    private function acknowledgePurchase($purchase): void
+    private function acknowledgePurchase($purchase): array
     {
         try {
             $token = Crypt::decryptString((string) $purchase->purchase_token_encrypted);
@@ -843,20 +861,36 @@ class GooglePlayBillingService
                 $product = rawurlencode((string) $purchase->product_id);
                 $path = self::API_BASE . $package . '/purchases/products/' . $product . '/tokens/' . $token . ':acknowledge';
             }
-            $response = Http::withToken($this->accessToken())->acceptJson()->timeout(15)->post($path, new \stdClass());
+            $response = Http::withToken($this->accessToken())
+                ->acceptJson()
+                ->withBody('{}', 'application/json')
+                ->timeout(15)
+                ->send('POST', $path);
             if ($response->successful() || $response->status() === 409) {
                 DB::table('google_play_purchases')->where('id', $purchase->id)->update([
                     'acknowledgement_state' => 'ACKNOWLEDGEMENT_STATE_ACKNOWLEDGED',
                     'updated_at' => now(),
                 ]);
-            } else {
-                Log::warning('Google Play purchase acknowledgement failed.', ['purchase_id' => (int) $purchase->id, 'http_status' => $response->status()]);
+                return ['outcome' => 'acknowledged', 'http_status' => $response->status()];
             }
+
+            Log::warning('Google Play purchase acknowledgement failed.', ['purchase_id' => (int) $purchase->id, 'http_status' => $response->status()]);
+            return ['outcome' => 'http_error', 'http_status' => $response->status()];
         } catch (\Throwable $exception) {
+            $location = $exception->getFile();
             Log::warning('Google Play purchase acknowledgement could not be completed.', [
                 'purchase_id' => (int) $purchase->id,
                 'exception' => get_class($exception),
+                'source_file' => basename($location),
+                'source_line' => $exception->getLine(),
+                'http_status' => $exception instanceof HttpException ? $exception->getStatusCode() : null,
             ]);
+            return [
+                'outcome' => 'exception',
+                'exception' => get_class($exception),
+                'source' => basename($location) . ':' . $exception->getLine(),
+                'http_status' => $exception instanceof HttpException ? $exception->getStatusCode() : null,
+            ];
         }
     }
 

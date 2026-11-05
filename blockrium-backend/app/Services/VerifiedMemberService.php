@@ -1389,6 +1389,27 @@ class VerifiedMemberService
             ->leftJoin('res_users as u', 'u.id', '=', 'm.user_id')
             ->select(['m.*', 'u.name', 'u.email', 'u.username as legacy_username']);
 
+        $hasPlayPurchases = Schema::hasTable('google_play_purchases');
+        if ($hasPlayPurchases) {
+            $latestKycPurchase = DB::table('google_play_purchases')
+                ->selectRaw('user_id, MAX(id) as latest_purchase_id')
+                ->where('purpose', 'kyc')
+                ->whereNotNull('google_order_id')
+                ->groupBy('user_id');
+            $query->leftJoinSub($latestKycPurchase, 'latest_kyc_play', function ($join) {
+                $join->on('latest_kyc_play.user_id', '=', 'm.user_id');
+            })->leftJoin('google_play_purchases as kyc_play', 'kyc_play.id', '=', 'latest_kyc_play.latest_purchase_id')
+                ->addSelect([
+                    'kyc_play.google_order_id as google_play_order_id',
+                    'kyc_play.status as google_play_purchase_status',
+                    'kyc_play.acknowledgement_state as google_play_acknowledgement_state',
+                ]);
+        } else {
+            $query->addSelect(DB::raw('NULL as google_play_order_id'))
+                ->addSelect(DB::raw('NULL as google_play_purchase_status'))
+                ->addSelect(DB::raw('NULL as google_play_acknowledgement_state'));
+        }
+
         if (!empty($filters['status'])) {
             if ($filters['status'] === 'payment_pending') {
                 $query->where('m.kyc_status', 'approved')->where(function ($payment) {
@@ -1411,12 +1432,15 @@ class VerifiedMemberService
 
         if (!empty($filters['search'])) {
             $search = '%' . trim($filters['search']) . '%';
-            $query->where(function ($builder) use ($search) {
+            $query->where(function ($builder) use ($search, $hasPlayPurchases) {
                 $builder->where('u.name', 'like', $search)
                     ->orWhere('u.email', 'like', $search)
                     ->orWhere('u.username', 'like', $search)
                     ->orWhere('m.didit_session_id', 'like', $search)
                     ->orWhere('m.payment_reference', 'like', $search);
+                if ($hasPlayPurchases) {
+                    $builder->orWhere('kyc_play.google_order_id', 'like', $search);
+                }
             });
         }
 

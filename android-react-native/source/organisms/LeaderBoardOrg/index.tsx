@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
   podiumCard: {
     flex: 1,
     alignItems: 'center',
-    minHeight: 138,
+    minHeight: 116,
   },
   podiumIconShell: {
     width: 44,

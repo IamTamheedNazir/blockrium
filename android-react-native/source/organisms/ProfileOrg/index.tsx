@@ -33,8 +33,8 @@ import {BadgeStrip, LevelProgressCard} from '../../molecules/EngagementCards';
 const profileActions = [
   {
     key: 'verified-member',
-    title: 'Verified Member',
-    subtitle: 'Track KYC approval and Blockrium Verified membership separately.',
+    title: 'Verification & membership',
+    subtitle: 'KYC identity status and optional paid membership.',
     icon: 'shield-checkmark-outline',
     onPress: () => navigate('VerifiedMember'),
   },
@@ -425,8 +425,8 @@ const styles = StyleSheet.create({
   },
   screenTitle: {
     color: theme.colors.text,
-    fontSize: 29,
-    lineHeight: 33,
+    fontSize: 26,
+    lineHeight: 31,
     fontFamily: theme.typography.display,
   },
   screenSubtitle: {
@@ -455,19 +455,19 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(14, 21, 31, 0.94)',
   },
   avatar: {
-    width: 62,
-    height: 62,
-    borderRadius: 21,
+    width: 54,
+    height: 54,
+    borderRadius: 18,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'rgba(0, 214, 176, 0.14)',
     borderWidth: 1,
     borderColor: theme.colors.border,
-    marginRight: 14,
+    marginRight: 12,
   },
   avatarText: {
     color: theme.colors.primary,
-    fontSize: 25,
+    fontSize: 22,
     fontFamily: theme.typography.display,
   },
   accountCopy: {
@@ -475,13 +475,13 @@ const styles = StyleSheet.create({
   },
   name: {
     color: theme.colors.text,
-    fontSize: 20,
+    fontSize: 18,
     fontFamily: theme.typography.heading,
   },
   email: {
     marginTop: 4,
     color: theme.colors.textMuted,
-    fontSize: 14,
+    fontSize: 13,
     fontFamily: theme.typography.body,
   },
   uidRow: {
@@ -619,17 +619,17 @@ const styles = StyleSheet.create({
   actionCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    minHeight: 68,
-    paddingVertical: 12,
+    minHeight: 62,
+    paddingVertical: 10,
   },
   actionIconShell: {
-    width: 40,
-    height: 40,
-    borderRadius: 15,
+    width: 36,
+    height: 36,
+    borderRadius: 13,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'rgba(0, 214, 176, 0.12)',
-    marginRight: 12,
+    marginRight: 10,
   },
   actionCopy: {
     flex: 1,

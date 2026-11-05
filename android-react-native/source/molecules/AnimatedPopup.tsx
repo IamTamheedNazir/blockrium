@@ -91,10 +91,10 @@ const styles = StyleSheet.create({
     maxWidth: 340,
   },
   popupCard: {
-    borderRadius: 28,
+    borderRadius: 22,
     borderWidth: 1,
     borderColor: theme.colors.borderStrong,
-    padding: 24,
+    padding: 18,
     alignItems: 'center',
     overflow: 'hidden',
   },
